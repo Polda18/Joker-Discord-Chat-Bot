@@ -1,0 +1,32 @@
+{
+  "name": "joker-discord-chat-bot",
+  "version": "0.0.1",
+  "description": "Discord chat bot for message and user management and guard and for entertainment",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Polda18/Joker-Discord-Chat-Bot.git"
+  },
+  "keywords": [
+    "discord",
+    "bot",
+    "joker"
+  ],
+  "author": "CZghost",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/Polda18/Joker-Discord-Chat-Bot/issues"
+  },
+  "homepage": "https://github.com/Polda18/Joker-Discord-Chat-Bot#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.1.0",
+    "mysql": "^2.16.0"
+  }
+}
