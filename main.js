@@ -38,7 +38,7 @@ client.default_settings = Object.freeze({
     })
 });
 
-client.current_settings = {     // Subject to change, actuallz
+client.current_settings = {     // Subject to change, actually
     prefix: process.env.default_prefix,
     diceroll_emoji_base: "\uFE0F\u20E3",
     coinflip_emoji_base: {
