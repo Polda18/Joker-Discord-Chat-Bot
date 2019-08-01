@@ -24,11 +24,18 @@ client.credentials = {      //
 
 client.default_settings = Object.freeze({
     prefix: process.env.default_prefix,
+    diceroll_emoji_default: true,
     diceroll_emoji_base: "\uFE0F\u20E3",        // Dice Roll command emoji base of keypads (used as "#\uFE0F\u20E3"
                                                 // where # is a digit from 1 to 6 = 6 sides of a dice)
+    coinflip_emoji_default: true,
     coinflip_emoji_base: Object.freeze({
         heads: "\uD83D\uDC78",    // Princess Emoji
         tails: "\uD83E\uDD85"     // Eagle Emoji
+    }),
+    votepoll_emoji_default: true,
+    votepoll_emoji_base: Object.freeze({
+        vote_yes: "\uD83D\uDC4D",
+        vote_no: "\uD83D\uDC4E"
     }),
     roles_set: Object.freeze({
         owner: false,
@@ -38,15 +45,22 @@ client.default_settings = Object.freeze({
     })
 });
 
-client.current_settings = {     // Subject to change, actuallz
+client.current_settings = {     // Subject to change, actually
     prefix: process.env.default_prefix,
-    diceroll_emoji_base: "\uFE0F\u20E3",
-    coinflip_emoji_base: {
+    diceroll_emoji_default: true,       // will be false if set to custom
+    diceroll_emoji_base: "\uFE0F\u20E3",    // will be list of 6 emoji ids if set to custom
+    coinflip_emoji_default: true,       // will be false if set to custom
+    coinflip_emoji_base: {              // will be set of 2 emoji ids (heads/tails) if set to custom
         heads: "\uD83D\uDC78",
         tails: "\uD83E\uDD85"
     },
+    votepoll_emoji_default: true,
+    votepoll_emoji_base: {
+        vote_yes: "\uD83D\uDC4D",
+        vote_no: "\uD83D\uDC4E"
+    },
     roles_set: {
-        owner: false,
+        owner: false,       // If set, that settings will be id of the role
         admin: false,
         moderator: false,
         developer: false
@@ -71,6 +85,7 @@ client.current_settings = {     // Subject to change, actuallz
 //             console.log(`Successfully inserted "${client.default_settings.prefix}" into 'prefix'.`);
 //         });
 //     });
+    
 //     // TODO
 // });
 

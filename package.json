@@ -2,7 +2,7 @@
   "name": "joker-discord-chat-bot",
   "version": "0.0.1",
   "description": "Discord chat bot for message and user management and guard and for entertainment",
-  "main": "index.js",
+  "main": "main.js",
   "directories": {
     "doc": "docs"
   },
