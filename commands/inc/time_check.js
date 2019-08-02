@@ -1,4 +1,4 @@
-module.exports = (mods, switches) => {
+module.exports.time_check = (mods, switches) => {
     // Check the correct time format: 1y2m3w4d5h6min7s [modifiers order only]
 
     // All modifiers are contained
@@ -576,51 +576,305 @@ module.exports = (mods, switches) => {
     }
 
     // Four modifiers missing (days, hours minutes and seconds; weeks already covered)
-    // TODO: next statements
+    if(switches.y && switches.m && switches.w && !switches.d && !switches.h && !switches.min && !switches.s) {
+        if(mods.y > mods.m || mods.m > mods.w)
+            return false;
+    }
 
     // Five modifiers missing (years, months, weeks, days and another)
-    // TODO: next statements
+    if(!switches.y && !switches.m && !switches.w && !switches.d && !switches.h && switches.min && switches.s) {
+        // Years, months, weeks, days and hours not included
+        if(mods.min > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && !switches.w && !switches.d && switches.h && !switches.min && switches.s) {
+        // Years, months, weeks, days and minutes not included
+        if(mods.h > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && !switches.w && !switches.d && switches.h && switches.min && !switches.s) {
+        // Years, months, weeks, days and seconds not included
+        if(mods.h > mods.min)
+            return false;
+    }
 
-    // Fice modifiers missing (years, months, weeks, hours and another)
-    // TODO: next statements
+    // Five modifiers missing (years, months, weeks, hours and another)
+    if(!switches.y && !switches.m && !switches.w && switches.d && !switches.h && !switches.min && switches.s) {
+        // Years, months, weeks, hours and minutes not included (days already covered)
+        if(mods.d > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && !switches.w && switches.d && !switches.h && switches.min && !switches.s) {
+        // Years, months, weeks, hours and seconds not included
+        if(mods.d > mods.min)
+            return false;
+    }
 
     // Five modifiers missing (years, months, weeks, minutes and another)
-    // TODO: next statements
+    if(!switches.y && !switches.m && !switches.w && switches.d && switches.h && !switches.min && !switches.s) {
+        // Years, months, weeks, minutes and seconds not included (hours already covered)
+        if(mods.d > mods.h)
+            return false;
+    }
 
     // Five modifiers missing (years, weeks, days, hours and another)
-    // TODO: next statements
+    if(!switches.y && switches.m && !switches.w && !switches.d && !switches.h && !switches.min && switches.s) {
+        // Years, weeks, days, hours and minutes not included (months already covered)
+        if(mods.m > mods.s)
+            return false;
+    }
+    if(!switches.y && switches.m && !switches.w && !switches.d && !switches.h && switches.min && !switches.s) {
+        // Years, weeks, days, hours and seconds not included
+        if(mods.m > mods.min)
+            return false;
+    }
 
     // Five modifiers missing (years, weeks, days, minutes and another)
-    // TODO: next statements
+    if(!switches.y && switches.m && !switches.w && !switches.d && switches.h && !switches.min && !switches.s) {
+        // Years, weeks, days, minutes and seconds not included (hours already covered)
+        if(mods.m > mods.h)
+            return false;
+    }
 
     // Five modifiers missing (years, days, hours, minutes and another)
-    // TODO: next statements
+    if(!switches.y && switches.m && switches.w && !switches.d && !switches.h && !switches.min && !switches.s) {
+        // Years, days, hours, minutes and seconds not included (weeks already covered)
+        if(mods.m > mods.w)
+            return false;
+    }
 
     // Five modifiers missing (months, weeks, days, hours and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && !switches.w && !switches.d && !switches.h && !switches.min && switches.s) {
+        // Months, weeks, days, hours and minutes not included (years already covered)
+        if(mods.y > mods.s)
+            return false;
+    }
+    if(switches.y && !switches.m && !switches.w && !switches.d && !switches.h && switches.min && !switches.s) {
+        // Months, weeks, days, hours and seconds not included
+        if(mods.y > mods.min)
+            return false;
+    }
 
     // Five modifiers missing (months, weeks, days, minutes and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && !switches.w && !switches.d && switches.h && !switches.min && !switches.s) {
+        // Months, weeks, days, minutes and seconds not included (hours already covered)
+        if(mods.y > mods.h)
+            return false;
+    }
 
     // Five modifiers missing (months, days, hours, minutes and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && switches.w && !switches.d && !switches.h && !switches.min && !switches.s) {
+        // Months, days, hours, minutes and seconds not included (weeks already covered)
+        if(mods.y > mods.w)
+            return false;
+    }
 
-    // Five modifiers missing (weeks, days, hours minutes and seconds; months already covered)
-    // TODO: next statements
+    // Five modifiers missing (weeks, days, hours, minutes and seconds; months already covered)
+    if(switches.y && switches.m && !switches.w && !switches.d && !switches.h && !switches.min && !switches.s) {
+        if(mods.y > mods.m)
+            return false;
+    }
 
-    // Six modifiers missing (years, months, weeks, days, hours and another)
-    // TODO: next statements
-
-    // Six modifiers missing (years, months, weeks, days, minutes and another)
-    // TODO: next statements
-
-    // Six modifiers missing (years, weeks, days hours, minutes and another)
-    // TODO: next statements
-
-    // Six modifiers missing (months, weeks, days, hours, minutes and seconds; years already covered)
-    // TODO: next statements
-
-    // All seven modifiers missing (years, months, weeks, days, hours, minutes and seconds) => default settings, only seconds => no error
-    // Any other case => No error occured, let's celebrate!
+    // Six or all seven modifiers missing (years, months, weeks, days, hours, minutes and seconds)
+    // If only one modifier is present, there's nothing to compare => no error
+    // If no modifier is present, it's default in seconds => no error
+    // If all order is right => no error
     return true;
+}
+
+module.exports.time_constants = {
+    year: 3.1556926e10,
+    month: 2.62974383e9,
+    week: 604800000,
+    day: 86400000,
+    hour: 3600000,
+    minute: 60000,
+    second: 1000
+}
+
+module.exports.time_parse = (duration_string, error) => {
+    // Prepare the constants of the duration time translation for milliseconds:
+    let constants = this.time_constants;
+
+    // Prepare the duration of the vote
+    let duration = {
+        years: 0,
+        months: 0,
+        weeks: 0,
+        days: 0,
+        hours: 0,
+        minutes: 0,
+        seconds: 0
+    };
+    
+    // Get the timestamp modifiers' positions (correct format is y < m < w < d < h < min < s, since string is read LTR)
+    let mods = {
+        y: duration_string.search(/y/i),
+        m: duration_string.search(/m/i),
+        w: duration_string.search(/w/i),
+        d: duration_string.search(/d/i),
+        h: duration_string.search(/h/i),
+        min: duration_string.search(/min/i),
+        s: duration_string.search(/s/i)
+    };
+
+    // Prepare switches for timestamp modifiers, basic all true;
+    let switches = {
+        y: true,
+        m: true,
+        w: true,
+        d: true,
+        h: true,
+        min: true,
+        s: true
+    };
+
+    // Check not found timestamp modifiers
+    if(mods.y == -1)
+        switches.y = false;
+    if(mods.m == -1)
+        switches.m = false;
+    if(mods.w == -1)
+        switches.w = false;
+    if(mods.d == -1)
+        switches.d = false;
+    if(mods.h == -1)
+        switches.h = false;
+    if(mods.min == -1)
+        switches.min = false;
+    if(mods.s == -1)
+        switches.s = false;
+    
+    // Since 'm' and 'min' start to same letter, 'm' might as well be found in 'min' => months are disabled
+    if(mods.m == mods.min)
+    switches.m = false;
+
+    // Check the correct format: 1y2m3w4d5h6min7s [seconds do not need to end with 's'; no milliseconds]
+    let error = !time_check(mods, switches);  // Negated, since the 'time_check()' function returns true for success, not failure
+
+    // If an error occured, let's iterrupt right here and return null:
+    if(error) return null;
+
+    // Order modifiers positions from furthest to nearest and remove -1 positions (no positions)
+    let modifiers_ordered = [];
+
+    for(var key in mods) {
+        if(!mods.hasOwnProperty(key)) continue;     // Ignore prototype keys
+
+        if(mods[key] > -1) modifiers_ordered.push(mods[key]);
+    }
+
+    modifiers_ordered.sort((a, b) => {return a - b});
+
+    // Get last modifier's position
+    let last_modifier = modifiers_ordered[modifiers_ordered.length - 1];
+
+    // Check last modifier (without seconds and data after)
+    let last = {
+        y: switches.y && duration_string.substring(last_modifier).length > 1,
+        m: switches.m && duration_string.substring(last_modifier).length > 1,
+        w: switches.w && duration_string.substring(last_modifier).length > 1,
+        d: switches.d && duration_string.substring(last_modifier).length > 1,
+        h: switches.h && duration_string.substring(last_modifier).length > 1,
+        min: switches.min && duration_string.substring(last_modifier + 2).length > 1,   // Because 'min' has 3 letters, not 1
+    };
+    if(!switches.s && (last.y || last.m || last.w || last.d || last.h || last.min)) {
+        // There's something after the last modifier: seconds defined
+        switches.s = true;
+    }
+
+    // Count enabled switches
+    let sw_count = 0;
+    for(var key in switches) {
+        if(!switches.hasOwnProperty(key)) continue;     // Ignore prototype keys
+
+        if(switches[key]) ++sw_count;       // If true, increase counter
+    }
+
+    // Check number of switches against number of valid positions => remove unnecessary
+    if(sw_count < modifiers_positions.length) {
+        for(i = 0; i < modifiers_positions.length; ++i) {
+            if(i > 0 && modifiers_positions[i] == modifier_position[i - 1]);
+                modifiers_positions.splice(i, 1);
+        }
+    }
+
+    // Fill in modified time string parsed to numbers
+    let number = 0;
+    let substr_position = 0;
+        
+    switch(modifiers_positions.length) {
+        case 0:
+            // Try to get a number and return error when not a number
+            number = Number(duration_string);
+            if(number == NaN) {
+                error = true;
+                return null;
+            }
+
+            // Place the number in correct field (seconds in this case)
+            duration.s = number;
+            break;
+        case 1:
+            // Determine the substring position by ... TODO
+            // Try to get a number and return error when not a number
+            number = Number(duration_string.substring(0, modifiers_positions[0]));
+            if(number == NaN) {
+                error = true;
+                return null;
+            }
+
+            // Place the number in correct field
+            if(switches.y) duration.y = number;
+            if(switches.m) duration.m = number;
+            if(switches.w) duration.w = number;
+            if(switches.d) duration.d = number;
+            if(switches.h) duration.h = number;
+            if(switches.min) duration.min = number;
+            if(switches.s) duration.s = number;
+            break;
+        case 2:
+            
+    }
+    // TODO
+
+    // Return the duration of the parsed time string
+    return duration;
+}
+
+module.exports.time_str_build = (duration) => {
+    // Let's prepare the individual pieces before joining them...
+    let str_pieces = [
+        (duration.y > 0) ? `${duration.y} year${(duration.y > 1) ? 's' : ''}` : '',
+        (duration.m > 0) ? `${duration.m} month${(duration.m > 1) ? 's' : ''}` : '',
+        (duration.w > 0) ? `${duration.w} week${(duration.w > 1) ? 's' : ''}` : '',
+        (duration.d > 0) ? `${duration.d} day${(duration.d > 1) ? 's' : ''}` : '',
+        (duration.h > 0) ? `${duration.h} hour${(duration.h > 1) ? 's' : ''}` : '',
+        (duration.min > 0) ? `${duration.min} minute${(duration.min > 1) ? 's' : ''}` : '',
+        (duration.s > 0) ? `${duration.s} second${(duration.s > 1) ? 's' : ''}` : ''
+    ];
+
+    // Remove empty strings
+    for(i = 0; i < str_pieces.length; ++i) {
+        if(str_pieces[i] == '') str_pieces.splice(i, 1);    // If there is an empty string, remove it from the array
+    }
+
+    // Build up the concatenated string: '1 year, 2 months, 3 weeks, 4 days, 5 hours, 6 minutes and 7 seconds'
+    let time_string = '';
+
+    for(i = 0; i < str_pieces.length; ++i) {
+        switch(i) {
+            case 0:
+                time_string += str_pieces[i];
+                break;
+            case (str_pieces.length - 1):
+                time_string += ` and ${str_pieces[i]}`;
+                break;
+            default:
+                time_string += `, ${str_pieces[i]}`;
+        }
+    }
+
+    // Return the built concatenated string:
+    return time_string;
 }
