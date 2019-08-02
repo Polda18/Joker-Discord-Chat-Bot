@@ -368,15 +368,119 @@ module.exports = (mods, switches) => {
     }
 
     // Four modifiers missing (years, months, weeks and another)
-    // TODO: next statements
+    if(!switches.y && !switches.m && !switches.w && !switches.d && switches.h && switches.min && switches.s) {
+        // Years, months, weeks and days not included
+        if(mods.h > mods.min || mods.min > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && !switches.w && switches.d && !switches.h && switches.min && switches.s) {
+        // Years, months, weeks and hours not included
+        if(mods.d > mods.min || mods.min > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && !switches.w && switches.d && switches.h && !switches.min && switches.s) {
+        // Years, months, weeks and minutes not included
+        if(mods.d > mods.h || mods.h > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && !switches.w && switches.d && switches.h && switches.min && !switches.s) {
+        // Years, months, weeks and seconds not included
+        if(mods.d > mods.h || mods.h > mods.min)
+            return false;
+    }
 
     // Four modifiers missing (years, months, days and another)
-    // TODO: next statements
+    if(!switches.y && !switches.m && switches.w && !switches.d && !switches.h && switches.min && switches.s) {
+        // Years, months, days and hours not included (weeks already covered)
+        if(mods.w > mods.min || mods.min > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && switches.w && !switches.d && switches.h && !switches.min && switches.s) {
+        // Years, months, days and minutes not included
+        if(mods.w > mods.h || mods.h > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && switches.w && !switches.d && switches.h && switches.min && !switches.s) {
+        // Yers, months, days and seconds not included
+        if(mods.w > mods.h || mods.h > mods.min)
+            return false;
+    }
 
     // Four modifiers missing (years, months, hours and another)
-    // TODO: next statements
+    if(!switches.y && !switches.m && switches.w && switches.d && !switches.h && !switches.min && switches.s) {
+        // Years, months, hours and minutes not included (days already covered)
+        if(mods.w > mods.d || mods.d > mods.s)
+            return false;
+    }
+    if(!switches.y && !switches.m && switches.w && switches.d && !switches.h && switches.min && !switches.s) {
+        // Years, months, hours and seconds not included
+        if(mods.w > mods.d || mods.d > mods.min)
+            return false;
+    }
 
     // Four modifiers missing (years, months, minutes and another)
+    if(!switches.y && !switches.m && switches.w && switches.d && switches.h && !switches.min && !switches.s) {
+        // Years, months, minutes and seconds not included (hours already covered)
+        if(mods.w > mods.d || mods.d > mods.h)
+            return false;
+    }
+
+    // Four modifiers missing (years, weeks, days and another)
+    if(!switches.y && switches.m && !switches.w && !switches.d && !switches.h && switches.min && switches.s) {
+        // Years, weeks, days and hours not included (months already covered)
+        if(mods.m > mods.min || mods.min > mods.s)
+            return false;
+    }
+    if(!switches.y && switches.m && !switches.w && !switches.d && switches.h && !switches.min && switches.s) {
+        // Years, weeks, days and minutes not included
+        if(mods.m > mods.h || mods.h > mods.s)
+            return false;
+    }
+    if(!switches.y && switches.m && !switches.w && !switches.d && switches.h && switches.min && !switches.s) {
+        // Years, weeks, days and seconds not included
+        if(mods.m > mods.h || mods.h > mods.min)
+            return false;
+    }
+
+    // Four modifiers missing (years, weeks, hours and another)
+    if(!switches.y && switches.m && !switches.w && switches.d && !switches.h && !switches.min && switches.s) {
+        // Years, weeks, hours and minutes not included (days already covered)
+        if(mods.m > mods.d || mods.d > mods.s)
+            return false;
+    }
+    if(!switches.y && switches.m && !switches.w && switches.d && !switches.h && switches.min && !switches.s) {
+        // Years, weeks, hours and seconds not included
+        if(mods.m > mods.d || mods.d > mods.min)
+            return false;
+    }
+
+    // Four modifiers missing (years, weeks, minutes and another)
+    if(!switches.y && switches.m && !switches.w && switches.d && switches.h && !switches.min && !switches.s) {
+        // Years, weeks, minutes and seconds not included (hours already covered)
+        if(mods.m > mods.d || mods.d > mods.h)
+            return false;
+    }
+
+    // Four modifiers missing (years, days, hours and another)
+    if(!switches.y && switches.m && switches.w && !switches.d && !switches.h && !switches.min && switches.s) {
+        // Years, days, hours and minutes not included (weeks already covered)
+        if(mods.m > mods.w || mods.w > mods.s)
+            return false;
+    }
+    if(!switches.y && switches.m && switches.w && !switches.d && !switches.h && switches.min && !switches.s) {
+        // Years, days, hours and seconds not included
+        if(mods.m > mods.w || mods.w > mods.min)
+            return false;
+    }
+
+    // Four modifiers missing (years, days, minutes and another)
+    if(!switches.y && switches.m && switches.w && !switches.d && switches.h && !switches.min && !switches.s) {
+        // Years, days, minutes and seconds not included (hours already covered)
+        if(mods.m > mods.w || mods.w > mods.h)
+            return false;
+    }
+
+    // Four modifiers missing (years, hours, minutes and another)
     // TODO: next statements
 
     // Four modifiers missing (months, weeks, days and another)
@@ -388,13 +492,31 @@ module.exports = (mods, switches) => {
     // Four modifiers missing (months, weeks, minutes and another)
     // TODO: next statements
 
+    // Four modifiers missing (months, weeks, hours and another)
+    // TODO: next statements
+
+    // Four modifiers missing (months, weeks, minutes and another)
+    // TODO: next statements
+
+    // Four modifiers missing (months, days, hours and another)
+    // TODO: next statements
+
+    // Four modifiers missing (months, days, minutes and another)
+    // TODO: next statements
+
+    // Four modifiers missing (months, hours, minutes and another)
+    // TODO: next statements
+
     // Four modifiers missing (weeks, days, hours and another)
     // TODO: next statements
 
     // Four modifiers missing (weeks, days, minutes and another)
     // TODO: next statements
 
-    // Four modifiers missing (days, hours minutes and seconds; week already covered)
+    // Four modifiers missing (weeks, hours, minutes and another)
+    // TODO: next statements
+
+    // Four modifiers missing (days, hours minutes and seconds; weeks already covered)
     // TODO: next statements
 
     // Five modifiers missing (years, months, weeks, days and another)
@@ -406,10 +528,22 @@ module.exports = (mods, switches) => {
     // Five modifiers missing (years, months, weeks, minutes and another)
     // TODO: next statements
 
+    // Five modifiers missing (years, weeks, days, hours and another)
+    // TODO: next statements
+
+    // Five modifiers missing (years, weeks, days, minutes and another)
+    // TODO: next statements
+
+    // Five modifiers missing (years, days, hours, minutes and another)
+    // TODO: next statements
+
     // Five modifiers missing (months, weeks, days, hours and another)
     // TODO: next statements
 
     // Five modifiers missing (months, weeks, days, minutes and another)
+    // TODO: next statements
+
+    // Five modifiers missing (months, days, hours, minutes and another)
     // TODO: next statements
 
     // Five modifiers missing (weeks, days, hours minutes and seconds; months already covered)
@@ -421,10 +555,13 @@ module.exports = (mods, switches) => {
     // Six modifiers missing (years, months, weeks, days, minutes and another)
     // TODO: next statements
 
+    // Six modifiers missing (years, weeks, days hours, minutes and another)
+    // TODO: next statements
+
     // Six modifiers missing (months, weeks, days, hours, minutes and seconds; years already covered)
     // TODO: next statements
 
     // All seven modifiers missing (years, months, weeks, days, hours, minutes and seconds) => default settings, only seconds => no error
-    // No error occured, let's celebrate!
+    // Any other case => No error occured, let's celebrate!
     return true;
 }
