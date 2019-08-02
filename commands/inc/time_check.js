@@ -481,40 +481,99 @@ module.exports = (mods, switches) => {
     }
 
     // Four modifiers missing (years, hours, minutes and another)
-    // TODO: next statements
+    if(!switches.y && switches.m && switches.w && switches.d && !switches.h && !switches.min && !switches.s) {
+        // Years, hours, minutes and seconds not included (days already covered)
+        if(mods.m > mods.w || mods.w > mods.d)
+            return false;
+    }
 
     // Four modifiers missing (months, weeks, days and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && !switches.w && !switches.d && !switches.h && switches.min && switches.s) {
+        // Months, weeks, days and hours not included (years already covered)
+        if(mods.y > mods.min || mods.min > mods.s)
+            return false;
+    }
+    if(switches.y && !switches.m && !switches.w && !switches.d && switches.h && !switches.min && switches.s) {
+        // Months, weeks, days and minutes not included
+        if(mods.y > mods.h || mods.h > mods.s)
+            return false;
+    }
+    if(switches.y && !switches.m && !switches.w && !switches.d && switches.h && switches.min && !switches.s) {
+        // Months, weeks, days and seconds not included
+        if(mods.y > mods.h || mods.h > mods.min)
+            return false;
+    }
 
     // Four modifiers missing (months, weeks, hours and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && !switches.w && switches.d && !switches.h && !switches.min && switches.s) {
+        // Months, weeks, hours and minutes not included (days already covered)
+        if(mods.y > mods.d || mods.d > mods.s)
+            return false;
+    }
+    if(switches.y && !switches.m && !switches.w && switches.d && !switches.h && switches.min && !switches.s) {
+        // Months, weeks, hours and seconds not included
+        if(mods.y > mods.d || mods.d > mods.min)
+            return false;
+    }
 
     // Four modifiers missing (months, weeks, minutes and another)
-    // TODO: next statements
-
-    // Four modifiers missing (months, weeks, hours and another)
-    // TODO: next statements
-
-    // Four modifiers missing (months, weeks, minutes and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && !switches.w && switches.d && switches.h && !switches.min && !switches.s) {
+        // Months, weeks, minutes and seconds not included (hours already covered)
+        if(mods.y > mods.d || mods.d > mods.h)
+            return false;
+    }
 
     // Four modifiers missing (months, days, hours and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && switches.w && !switches.d && !switches.h && !switches.min && switches.s) {
+        // Months, days, hours and minutes not included (weeks already covered)
+        if(mods.y > mods.w || mods.w > mods.s)
+            return false;
+    }
+    if(switches.y && !switches.m && switches.w && !switches.d && !switches.h && switches.min && !switches.s) {
+        // Months, days, hours and seconds not included
+        if(mods.y > mods.w || mods.w > mods.min)
+            return false;
+    }
 
     // Four modifiers missing (months, days, minutes and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && switches.w && !switches.d && switches.h && !switches.min && !switches.s) {
+        // Months, days, minutes and seconds not included (hours already covered)
+        if(mods.y > mods.w || mods.w > mods.h)
+            return false;
+    }
 
     // Four modifiers missing (months, hours, minutes and another)
-    // TODO: next statements
+    if(switches.y && !switches.m && switches.w && switches.d && !switches.h && !switches.min && !switches.s) {
+        // Months, hours, minutes and seconds not included (days already covered)
+        if(mods.y > mods.w || mods.w > mods.d)
+            return false;
+    }
 
     // Four modifiers missing (weeks, days, hours and another)
-    // TODO: next statements
+    if(switches.y && switches.m && !switches.w && !switches.d && !switches.h && !switches.min && switches.s) {
+        // Weeks, days, hours and minutes not included (months already covered)
+        if(mods.y > mods.m || mods.m > mods.s)
+            return false;
+    }
+    if(switches.y && switches.m && !switches.w && !switches.d && !switches.h && switches.min && !switches.s) {
+        // Weeks, days, hours and seconds not included
+        if(mods.y > mods.m || mods.m > mods.min)
+            return false;
+    }
 
     // Four modifiers missing (weeks, days, minutes and another)
-    // TODO: next statements
+    if(switches.y && switches.m && !switches.w && !switches.d && switches.h && !switches.min && !switches.s) {
+        // Weeks, days, minutes and seconds not included (hours already covered)
+        if(mods.y > mods.m || mods.m > mods.h)
+            return false;
+    }
 
     // Four modifiers missing (weeks, hours, minutes and another)
-    // TODO: next statements
+    if(switches.y && switches.m && !switches.w && switches.d && !switches.h && !switches.min && !switches.s) {
+        // Weeks, hours, minutes and seconds not included (days already covered)
+        if(mods.y > mods.m || mods.m > mods.d)
+            return false;
+    }
 
     // Four modifiers missing (days, hours minutes and seconds; weeks already covered)
     // TODO: next statements
