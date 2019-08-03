@@ -1,6 +1,5 @@
 const Discord = require("discord.js")
 
-const time_check = require("./inc/time_check.js").time_check;
 const time_parse = require("./inc/time_check.js").time_parse;
 const time_str_build = require("./inc/time_check.js").time_str_build;
 const time_constants = require("./inc/time_check.js").time_constants;
