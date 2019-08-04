@@ -18,12 +18,13 @@ client.credentials = {      //
         host: process.env.mysql_host,
         user: process.env.mysql_user,
         pswd: process.env.mysql_pswd,
-        db: process.env.mysql_db
+        settings_db: process.env.mysql_db + "settings",
+        bans_mutes_db: process.env.mysql_db + "bans_mutes"
     }
 };
 
 client.default_settings = Object.freeze({
-    prefix: process.env.default_prefix,
+    prefix: "$$",
     diceroll_emoji_default: true,
     diceroll_emoji_base: "\uFE0F\u20E3",        // Dice Roll command emoji base of keypads (used as "#\uFE0F\u20E3"
                                                 // where # is a digit from 1 to 6 = 6 sides of a dice)
@@ -45,8 +46,18 @@ client.default_settings = Object.freeze({
     })
 });
 
-client.settings = {};       // Current settings => it needs to be filled by the mysql settings => settings per guild
+client.settings = {
+    guilds: {},
+    developers: {
+        chief: "370298001597399044",
+        additional: []
+    }
+};
+// Current settings => it needs to be filled by the mysql settings => settings per guild
 // Currently not used
+
+client.bans = {};
+client.mutes = {};
 
 client.current_settings = {     // Subject to change, actually
     prefix: process.env.default_prefix,
