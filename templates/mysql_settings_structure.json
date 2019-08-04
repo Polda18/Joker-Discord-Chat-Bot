@@ -41,7 +41,10 @@
                     "role_id"
                 ]
             },
-            "auditlog_channel": "channel_id"
+            "auditlog_channel": "channel_id",
+            "swearing_words": [
+                "swearing_word_regex"
+            ]
         }
     },
     "developers": {
