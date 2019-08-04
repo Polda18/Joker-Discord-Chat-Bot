@@ -1,53 +1,53 @@
 {
     "guilds": {
         "guild-id": {
-            "prefix": "$$",
+            "prefix": "bot_prefix",
             "votepoll_emotes": {
                 "default": false,
                 "base": {
-                    "vote_yes": "485171805766811648",
-                    "vote_no": "485171806156750858"
+                    "vote_yes": "vote_yes_emote",
+                    "vote_no": "vote_no_emote"
                 }
             },
             "coinflip_emotes": {
                 "default": false,
                 "base": {
-                    "heads": "485171805833789440",
-                    "tails": "485171806139973642"
+                    "heads": "heads_emote",
+                    "tails": "tails_emote"
                 }
             },
             "diceroll_emotes": {
                 "default": false,
                 "base": [
-                    "485171805200449538",
-                    "485171805661954069",
-                    "485171805510696971",
-                    "485171805657759746",
-                    "485171805787783174",
-                    "485171805821075486"
+                    "dice1_emote",
+                    "dice2_emote",
+                    "dice3_emote",
+                    "dice4_emote",
+                    "dice5_emote",
+                    "dice6_emote"
                 ]
             },
             "roles": {
                 "owner": [
-                    "488784094545575948"
+                    "role_id"
                 ],
                 "admin": [
-                    "486207221580169237"
+                    "role_id"
                 ],
                 "moderator": [
-                    "485784686359216138",
-                    "605697165146324992",
-                    "605697352723857419"
+                    "role_id"
                 ],
                 "developer": [
-                    "491682576659120139"
+                    "role_id"
                 ]
             },
-            "auditlog_channel": "485784967343898624"
+            "auditlog_channel": "channel_id"
         }
     },
     "developers": {
         "chief": "370298001597399044",
-        "additional": []
+        "additional": [
+            "user_id"
+        ]
     }
 }
