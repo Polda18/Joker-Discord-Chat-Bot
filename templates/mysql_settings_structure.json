@@ -1,6 +1,6 @@
 {
     "guilds": {
-        "guild-id": {
+        "guild_id": {
             "prefix": "bot_prefix",
             "votepoll_emotes": {
                 "default": false,
