@@ -13,16 +13,23 @@ module.exports.run = async (client, message, args) => {
         ? client.current_settings.votepoll_emoji_base.vote_no
         : message.guild.emojis.get(client.current_settings.votepoll_emoji_base.vote_no);
     
-    const compare = {
+    const filter = {
         vote_yes: (emojis_default) ? vote_yes : vote_yes.name,
         vote_no: (emojis_default) ? vote_no : vote_no.name
     };
+
+    const get = {
+        vote_yes: (emojis_default) ? vote_yes : vote_yes.id,
+        vote_no: (emojis_default) ? vote_no : vote_no.id
+    }
 
     if(args.length > 1) {
         // At least two arguments stated (last argument can contains spaces)
 
         let duration_string = args[0];
-        let topic = args.slice(1).join(" ");
+        let topic = args.slice(1).join(" ").trim();
+
+        if(duration_string == '' || topic == '') return await message.channel.send(`\u274C Did you really try to cheat me with empty arguments, ${message.author}? Haha, nice try!`);
 
         // Parse the time
         let error = { r: 0 };       // An object, because I need to change error code directly
@@ -69,16 +76,13 @@ module.exports.run = async (client, message, args) => {
         );
 
         let reactions = await sent.awaitReactions(
-            (r, u) => u.id !== client.user.id && [compare.vote_yes, compare.vote_no].includes(r.emoji.name),
+            (r, u) =>  u.id !== client.user.id && [filter.vote_yes, filter.vote_no].includes(r.emoji.name),
             {time: vote_time}
         );
 
-        // Debug
-        console.log(reactions);
-
         // Count reactions
-        let agreed = (reactions.get(compare.vote_yes)) ? reactions.get(compare.vote_yes).count - 1 : 0;
-        let disagreed = (reactions.get(compare.vote_no)) ? reactions.get(compare.vote_no).count - 1 : 0;
+        let agreed = (reactions.get(get.vote_yes)) ? reactions.get(get.vote_yes).count - 1 : 0;
+        let disagreed = (reactions.get(get.vote_no)) ? reactions.get(get.vote_no).count - 1 : 0;
         // Minus one, since both of reactions were first added by the bot
 
         // Check if there is zero somewhere

@@ -57,16 +57,11 @@ client.current_settings = {     // Subject to change, actually
         heads: "\uD83D\uDC78",
         tails: "\uD83E\uDD85"
     },
-    // votepoll_emoji_default: true,
-    // votepoll_emoji_base: {
-    //     vote_yes: "\uD83D\uDC4D",
-    //     vote_no: "\uD83D\uDC4E"
-    // },
-    votepoll_emoji_default: false,
+    votepoll_emoji_default: true,
     votepoll_emoji_base: {
-        vote_yes: "485171805766811648",
-        vote_no: "485171806156750858"
-    },  // Debugging session
+        vote_yes: "\uD83D\uDC4D",
+        vote_no: "\uD83D\uDC4E"
+    },
     roles_set: {
         owner: false,       // If set, that settings will be id of the role
         admin: false,
@@ -108,9 +103,9 @@ fs.readdir("./commands/", (err, files) => {     // Load different commands with 
 
     jsFiles.forEach((f, i) => {
         let props = require(`./commands/${f}`);
-        console.log(`Command file "${f}" loaded...`);
+        console.log(`Command file \`${f}\` loaded...`);
         client.commands_collection.set(props.helper.name, props);
-        console.log(`Command file "${f}" registered...`);
+        console.log(`Command file \`${f}\` registered...`);
     });
 
     console.log("Done...");
@@ -131,7 +126,7 @@ client.on('message', message => {
 
     if(command) {
         command.run(client, message, args);
-        console.log(`Command ${command.helper.name} has been run by ${message.author.tag} with id ${message.author.id}`);
+        console.log(`Command \`${command.helper.name}\` has been run by \`${message.author.tag}\` with id \`${message.author.id}\``);
     }
 })
 
