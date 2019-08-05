@@ -1,8 +1,0 @@
-{
-    "guild_id": {
-        "user_id": {
-            "issued": "YYYY-MM-DD HH:MM:SS",
-            "expires": "#y#m#w#d#h#min#s"
-        }
-    }
-}

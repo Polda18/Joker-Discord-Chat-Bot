@@ -39,23 +39,33 @@
                 ],
                 "developer": [
                     "role_id"
-                ]
+                ],
+                "muted": {
+                    "general": "role_id",
+                    "channels": {
+                        "channel_id": "role_id"
+                    }
+                }
             },
             "auditlog_channel": "channel_id",
             "swearing_words": [
                 "swearing_word_regex"
             ],
-            "experiences": {
-                "user_id": {
-                    "xp": "user_xp",
-                    "level": "user_lvl"
-                }
+            "welcomes": {
+                "channel": "channel_id",
+                "message": "message",
+                "dm": "dm_text"
+            },
+            "farewells": {
+                "channel": "channel_id",
+                "message": "message",
+                "dm": "dm_text"
             }
         }
     },
     "developers": {
         "chief": "370298001597399044",
-        "additional": [
+        "helping": [
             "user_id"
         ]
     }
