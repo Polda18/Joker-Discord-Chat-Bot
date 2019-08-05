@@ -29,7 +29,7 @@ module.exports.run = async (client, message, args) => {
         let duration_string = args[0];
         let topic = args.slice(1).join(" ").trim();
 
-        if(duration_string == '' || topic == '') return await message.channel.send(`\u274C Did you really try to cheat me with empty arguments, ${message.author}? Haha, nice try!`);
+        if(duration_string == '' || topic == '') return await message.channel.send(`\u274C Did you really try to cheat me with empty arguments, ${message.author}? Haha, nice try!`);       // \u274C: Red cross mark => error
 
         // Parse the time
         let error = { r: 0 };       // An object, because I need to change error code directly
@@ -38,12 +38,28 @@ module.exports.run = async (client, message, args) => {
         // An error occured? Call it done:
         switch(error.r) {
             case time_check.INTERNAL_EXCEPTION:
-                return await message.channel.send(`\u274C An internal exception has occured, ${message.author}!\nPlease take screenshot of this error and appropriate context and send a bug report to GitHub repository:\nhttps://github.com/Polda18/Joker-Discord-Chat-Bot`);
+                return await message.channel.send(`\u274C An internal exception has occured, ${message.author}!\nPlease take screenshot of this error and appropriate context and send a bug report to GitHub repository:\nhttps://github.com/Polda18/Joker-Discord-Chat-Bot`);     // \u274C: Red cross mark => error
             case time_check.INVALID_FORMAT:
-                return await message.channel.send(`\u274C This is not a correct time format, ${message.author}! Reffer to \`${client.current_settings.prefix}help vote\` page on the correct time format.`);
+                return await message.channel.send(`\u274C This is not a correct time format, ${message.author}! Reffer to \`${client.current_settings.prefix}help vote\` page on the correct time format.`);    // \u274C: Red cross mark => error
+            case time_check.TOO_BIG_TIME:
+                return await message.channel.send(`\u274C You specified too large time span, ${message.author}! Please, reduce some of the time span!`);        // \u274C: Red cross mark => error
             default:
                 break;
         }
+
+        // Determine the voting time in milliseconds
+        let vote_time = (
+            duration.y * time_check.time_constants.year
+            + duration.m * time_check.time_constants.month
+            + duration.w * time_check.time_constants.week
+            + duration.d * time_check.time_constants.day
+            + duration.h * time_check.time_constants.hour
+            + duration.min * time_check.time_constants.minute
+            + duration.s * time_check.time_constants.second
+        );
+
+        // Too big time?
+        if(vote_time === Infinity || vote_time === NaN) return await message.channel.send(`\u274C The time you specified resulted in too big voting time in milliseconds, ${message.author}! Please reduce some of the time span!`);    // \u274C: Red cross mark => error
 
         // Build specified time based on the duration
         let specified_time = time_check.time_str_build(duration);
@@ -65,16 +81,6 @@ module.exports.run = async (client, message, args) => {
         await sent.react(vote_no);
         
         // Start voting poll
-        let vote_time = (
-            duration.y * time_check.time_constants.year
-            + duration.m * time_check.time_constants.month
-            + duration.w * time_check.time_constants.week
-            + duration.d * time_check.time_constants.day
-            + duration.h * time_check.time_constants.hour
-            + duration.min * time_check.time_constants.minute
-            + duration.s * time_check.time_constants.second
-        );
-
         let reactions = await sent.awaitReactions(
             (r, u) =>  u.id !== client.user.id && [filter.vote_yes, filter.vote_no].includes(r.emoji.name),
             {time: vote_time}
@@ -122,8 +128,8 @@ module.exports.run = async (client, message, args) => {
         
         return await message.channel.send(vote_results_embed);
     } else {
-        // \u274C = red cross emoji
-        await message.channel.send(`\u274C One or more arguments are missing, ${message.author}!\nUsage: \`${client.current_settings.prefix}vote <duration> <topic>\`\nReffer to \`${client.current_settings.prefix}help vote\` page on the correct time format.`);
+        // \u274C: Red cross mark => error
+        await message.channel.send(`\u274C One or more arguments are missing, ${message.author}!\nUsage: \`${client.current_settings.prefix}vote <duration> <topic>\`\nReffer to \`${client.current_settings.prefix}help vote\` page on the correct time format.`);1
     }
 }
 

@@ -20,40 +20,71 @@ client.credentials = {
         host: process.env.mysql_host,
         user: process.env.mysql_user,
         pswd: process.env.mysql_pswd,
-        settings_db: process.env.mysql_db + "settings",
-        bans_mutes_db: process.env.mysql_db + "bans_mutes"
+        settings_db: process.env.mysql_db_prefix + "settings",
+        bans_mutes_db: process.env.mysql_db_prefix + "bans_mutes"
     }
 };
 
-// Load default settings
+// Load default settings => deprecated, gonna be replaced by the settings in settings
 client.default_settings = Object.freeze({
     prefix: "$$",
     diceroll_emoji_base: "\uFE0F\u20E3",        // Dice Roll command emoji base of keypads (used as "#\uFE0F\u20E3"
                                                 // where # is a digit from 1 to 6 = 6 sides of a dice)
     coinflip_emoji_base: Object.freeze({
-        heads: "\uD83D\uDC78",    // Princess Emoji
-        tails: "\uD83E\uDD85"     // Eagle Emoji
+        heads: "\uD83D\uDC78",    // Princess emoji
+        tails: "\uD83E\uDD85"     // Eagle emoji
     }),
     votepoll_emoji_base: Object.freeze({
-        vote_yes: "\uD83D\uDC4D",
-        vote_no: "\uD83D\uDC4E"
+        vote_yes: "\uD83D\uDC4D",   // Thumbs up emoji
+        vote_no: "\uD83D\uDC4E"     // Thumbs down emoji
     })
 });
 
 // Current settings as previously saved in MySQL database
 client.settings = {
-    guilds: {},     // Guild dependent settings filled programmatically (mapped by their ids) -> see templates
-    developers: {
-        chief: "370298001597399044",
-        additional: []
+    guilds: {       // Guild dependent settings filled programmatically (mapped by their ids) -> see templates
+        default: Object.freeze({  // Default settings for every guild not set specifically
+            prefix: "$$",
+            votepoll_emotes: Object.freeze({
+                default: true,
+                base: Object.freeze({
+                    vote_yes: "\uD83D\uDC4D",   // Thumbs up emoji
+                    vote_no: "\uD83D\uDC4E"     // Thumbs down emoji
+                })
+            }),
+            coinflip_emotes: Object.freeze({
+                default: true,
+                base: Object.freeze({
+                    heads: "\uD83D\uDC78",    // Princess emoji
+                    tails: "\uD83E\uDD85"     // Eagle emoji
+                })
+            }),
+            diceroll_emotes: Object.freeze({
+                default: true,
+                base: "\uFE0F\u20E3"    // Used as "#\uFE0F\u20E3" where # is the number from 1 to 6
+            }),
+            roles: Object.freeze({
+                owner: Object.freeze([]),
+                admin: Object.freeze([]),
+                moderator: Object.freeze([]),
+                developer: Object.freeze([])
+            }),
+            auditlog_channel: null,
+            swearing_words: Object.freeze([]),
+            experiences: Object.freeze({})
+        })
+    },
+    developers: {   // Developers of this bot
+        chief: "370298001597399044",    // Chief developer (master) => fill in your own Discord id for your fork
+        additional: []                  // Additional developers list (fill in programatically from mysql database)
     }
 };
 // Current settings => it needs to be filled by the mysql settings => settings per guild
 // Currently not used
 
 // Bans and mutes settings
-client.bans = {};
-client.mutes = {};
+client.bans = {};       // Bans issued in every guild (fill in programatically)
+client.mutes = {};      // Mutes issued in every guild (fill in programatically)
 
 client.current_settings = {     // deprecated => gonna be deleted, refactored and replaced by mysql settings
     prefix: "$$",
@@ -78,6 +109,7 @@ client.current_settings = {     // deprecated => gonna be deleted, refactored an
 };
 
 // PERFORM A MYSQL CONNECTION == TODO
+// client.mysql_connection
 
 // Create a collection of bot commands
 client.commands_collection = new Discord.Collection();  // Save commands here
@@ -108,8 +140,6 @@ client.on('ready', () => {
 // Scan a message for triggers
 client.on('message', message => {
     if (message.channel.type === "dm" || message.channel.type === "group") return; // ignore direct messages or group dm messages
-
-    // TODO: Swearing guard
     
     let prefix = client.current_settings.prefix;
     let msgArray = message.content.split(" ");
@@ -120,6 +150,10 @@ client.on('message', message => {
     if(command) {
         command.run(client, message, args);
         console.log(`Command \`${command.helper.name}\` has been run by \`${message.author.tag}\` with id \`${message.author.id}\``);
+    } else {
+        // TODO: Swearing guard
+
+        // TODO: Experiences
     }
 })
 

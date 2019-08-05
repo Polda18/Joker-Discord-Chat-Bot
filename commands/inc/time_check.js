@@ -1,5 +1,6 @@
 module.exports.INVALID_FORMAT = 1;
 module.exports.INTERNAL_EXCEPTION = 2;
+module.exports.TOO_BIG_TIME = 3;
 
 module.exports.time_constants = {
     year: 31556952000,
@@ -62,6 +63,72 @@ module.exports.time_parse = (duration_string, error) => {
         return null;        // Return null instead of duration
     }
 
+    // Does any of the defined time constants contain infinity or NaN?
+    if(duration.y === Infinity || duration.y === NaN) error.r = this.TOO_BIG_TIME;
+    if(duration.m === Infinity || duration.m === NaN) error.r = this.TOO_BIG_TIME;
+    if(duration.w === Infinity || duration.w === NaN) error.r = this.TOO_BIG_TIME;
+    if(duration.d === Infinity || duration.d === NaN) error.r = this.TOO_BIG_TIME;
+    if(duration.h === Infinity || duration.h === NaN) error.r = this.TOO_BIG_TIME;
+    if(duration.min === Infinity || duration.min === NaN) error.r = this.TOO_BIG_TIME;
+    if(duration.s === Infinity || duration.s === NaN) error.r = this.TOO_BIG_TIME;
+
+    // If there is some too big time, end it right here:
+    if(error.r === this.TOO_BIG_TIME) return duration;      // Return the duration, because it is used by the test command
+
+    // Check the values => years can be infinite, but months should only be less than year, etc.
+    if(duration.y > 0 && duration.m >= 12) {
+        // Years specified and months 12 or above
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.m > 0 && duration.w >= 4) {
+        // Months specified and weeks 4 or above (used before 52 weks, because 4 weeks in month)
+        // I know that 4 weeks in not a full month, but it is approximately this number in integer format
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.y > 0 && duration.w >= 52) {
+        // Years specified and weeks 52 or above
+        // I know that 52 weeks is not a full year, but it's closely aproximately this number in integer format
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.w > 0 && duration.d >= 7) {
+        // Weeks specified and days are 7 or above (used before 30 days in month, because 7 days in a week)
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.m > 0 && duration.d >= 30) {
+        // Months specified and days are 30 or above (used before 365 days in year, because 30 days in month)
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.y > 0 && duration.d >= 365) {
+        // Years specified and days are 365 or above
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.d > 0 && duration.h >= 24) {
+        // Days specified and hours 24 or above
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.h > 0 && duration.min >= 60) {
+        // Hours specified and minutes 60 or above
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.min > 0 && duration.s >= 60) {
+        // Minutes specified and seconds 60 or above (before hours, because 60 seconds in a minute)
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+    if(duration.h > 0 && duration.s >= 3600) {
+        // Hours specified and seconds 3600 or above
+        error.r = this.INVALID_FORMAT;
+        return null;
+    }
+
     // Return the duration
     return duration;
 };
@@ -89,9 +156,6 @@ module.exports.time_str_build = (duration) => {
     let time_string = '';
 
     for(i = 0; i < str_pieces.length; ++i) {
-        // Debug
-        console.log(str_pieces[i]);
-
         switch(i) {
             case 0:
                 time_string += str_pieces[i];
