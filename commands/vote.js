@@ -1,4 +1,12 @@
-const Discord = require("discord.js")
+/*****************************************
+ * Joker Discord Bot
+ * Made by CZghost/Polda18, 2019
+ * ALPHA v0.0.1
+ * 
+ * File: vote.js
+ *****************************************/
+
+const Discord = require("discord.js");
 
 const time_check = require("./inc/time_check.js");
 

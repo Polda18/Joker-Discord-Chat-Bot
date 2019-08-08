@@ -1,3 +1,11 @@
+/*****************************************
+ * Joker Discord Bot
+ * Made by CZghost/Polda18, 2019
+ * ALPHA v0.0.1
+ * 
+ * File: diceroll.js
+ *****************************************/
+
 module.exports.run = async (client, message, args) => {
     // Math and emoji base preparation: toss a random index in range <0;6) and floor result -> use emoji base
     let random_toss = Math.floor(Math.random() * 6);

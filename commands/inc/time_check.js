@@ -1,3 +1,11 @@
+/*****************************************
+ * Joker Discord Bot
+ * Made by CZghost/Polda18, 2019
+ * ALPHA v0.0.1
+ * 
+ * File: time_check.js
+ *****************************************/
+
 module.exports.INVALID_FORMAT = 1;
 module.exports.INTERNAL_EXCEPTION = 2;
 module.exports.TOO_BIG_TIME = 3;

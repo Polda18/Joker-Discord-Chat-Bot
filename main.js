@@ -13,7 +13,7 @@ const client = new Discord.Client({disableEveryone: true});
 const MySQL = require("mysql");
 const fs = require("fs");
 const Long = require("long");
-const DBL = require("dblapi.js");
+// const DBL = require("dblapi.js");
 
 // Setup credentials
 client.credentials = {
@@ -22,14 +22,12 @@ client.credentials = {
         host: process.env.mysql_host,
         user: process.env.mysql_user,
         pswd: process.env.mysql_pswd,
-        settings_db: process.env.mysql_db_prefix + "settings",
-        bans_mutes_db: process.env.mysql_db_prefix + "bans_mutes",
-        xp_levels_db: process.env.mysql_db_prefix + "xp_levels"
+        db: process.env.mysql_db
     },
     dbl_token: process.env.dbl_token
 };
 
-const dbl = new DBL(client.credentials.dbl_token, client);
+// const dbl = new DBL(client.credentials.dbl_token, client);
 
 // Load default settings => deprecated, gonna be replaced by the settings in settings
 client.default_settings = Object.freeze({
@@ -69,10 +67,14 @@ client.settings = {
                 default: true,
                 base: "\uFE0F\u20E3"    // Used as "#\uFE0F\u20E3" where # is the number from 1 to 6
             }),
+            leveling_disabled: false,
             roles: Object.freeze({
                 owner: Object.freeze([]),
                 admin: Object.freeze([]),
-                moderator: Object.freeze([]),
+                moderator: Object.freeze({
+                    general: null,
+                    channels: Object.freeze({})
+                }),
                 developer: Object.freeze([]),
                 muted: Object.freeze({
                     general: null,
@@ -168,112 +170,10 @@ fs.readdir("./commands/", (err, files) => {
     console.log("Done...");
 });
 
-const getDefaultChannel = guild => {
-    // Get the system channel, if exists
-    if(guild.system_channel) return guild.system_channel;
-
-    // Get the original default channel, if exists
-    if(guild.channels.has(guild.id)) return guild.channels.get(guild.id);
-
-    // Get the default #general channel, if exists
-    let general = guild.channels.find(c => c.name === "general");
-    if(general) return general;
-
-    // Get the first writeable channel it finds
-    // Beware that this will find any first writeable channel, which may be any if the bot has admin privilieges!
-    // It is wise to have one channel named #general in your server for this case. This is really the last hope
-    // to thank you for adding it in your server. Since this bot is administrator, the first channel it can write to
-    // is literally the first channel it can find.
-    return guild.channels.filter(c => c.type === "text" && c.permissionsFor(guild.client.user).has("SEND_MESSAGES"))
-        .sort((a, b) => a.position - b.position || Long.fromString(a.id).sub(Long.fromString(b.id)).toNumber())
-        .first();;
-}
-
 // This will be run when the bot is ready to roll out
 client.on('ready', () => {
     console.log(`Logged in as \`${client.user.tag}\` with id \`${client.user.id}\``);  // Says when the bot is ready
 });
-
-// Joined a guild? Roll out:
-client.on('guildCreate', guild => {
-    console.log(`Joined a guild \`${guild.name}\` with id \`${guild.id}\``);
-
-    let join_message = `Hey! Thanks for adding me in! Use \`${client.settings.guilds.default.prefix}help\` to get info on how to use my functions I provide and \`${client.settings.guilds.default.prefix}help settings\` on how to properly save my server dependent settings.`;
-
-    // Get the default channel, usually noted as #general
-    let system_channel = getDefaultChannel(guild);
-    if(system_channel) await system_channel.send(join_message);
-
-    // Update the settings by adding a new guild to the mysql database
-    // TODO: perform a mysql query to update settings in a mysql database
-
-    // TODO: perform a mysql query to update JSON settings from a mysql database
-});
-
-// Kicked from a guild? Back up:
-client.on('guildDelete', guild => {
-    console.log(`Kicked from a guild \`${guild.name}\` with id \`${guild.id}\``);
-
-    let leave_message = {
-        intro: `I'm sorry that I have to leave. Did I do something wrong? Please`,
-        please: `contact my chief developer`,
-        contacts: [],
-        outro: `I'm looking forward to see you again`
-    };
-    if(client.contact.discord_dm) leave_message.contacts.push(`directly on Discord DM to \`${client.contact.discord_dm}\``);
-    if(client.contact.email) leave_message.contacts.push(`via e-mail to ${client.contact.email}`);
-    if(client.contact.websites) leave_message.contacts.push(`using websites at ${client.contact.websites}`);
-    if(client.contact.issue_tracker) leave_message.contacts.push(`send a bug report or another issue to issue tracker at ${client.contact.issue_tracker}`);
-
-    let message = leave_message.intro;
-    for(i = 0; i < leave_message.contacts.length; ++i) {
-        switch(i) {
-            case 0:
-                if(
-                    leave_message.contacts[i].contains(client.contact.discord_dm)
-                    || leave_message.contacts[i].contains(client.contact.email)
-                    || leave_message.contacts[i].contains(client.contact.websites)
-                ) message += ` ${leave_message.please}`;
-                message += ` ${leave_message.contacts[i]}`;
-                break;
-            case leave_message.contacts.length - 1:
-                message += `or ${leave_message.contacts[i]}`;
-                break;
-            default:
-                message += `, ${leave_message.contacts[i]}`;
-        }
-    }
-    message += `. ${leave_message.outro}`;
-
-    return await getDefaultChannel(guild.id).send(message);
-});
-
-// Guild changed name? Announce it:
-client.on('guildUpdate', (oGuild, nGuild) => {
-    if(oGuild.id !== nGuild.id) return;     // Ignore cross guild change (maybe not gonna happen, but better safe than sorry)
-    if(oGuild.name !== nGuild.name) {
-        console.log(`Guild with id ${oGuild.id} changed name from \`${oGuild.name}\` to \`${nGuild.name}\``);
-    }
-});
-
-// Member joined? Welcome him!
-client.on('guildMemberAdd', member => {
-    console.log(`A user \`${member.user.tag}\` with id \`${member.user.id}\` joined guild \`${member.guild.name}\` with id \`${member.guild.id}\``);
-
-    // TODO: Perform a MySQL query and fetch set welcome message for current guild (or retrieve default)
-});
-
-// Member left? Farewell him!
-client.on('guildMemberRemove', member => {
-    console.log(`A user \`${member.user.tag}\` with id \`${member.user.id}\` left guild \`${member.guild.name}\` with id \`${member.guild.id}\``);
-
-    // TODO: Perform a MySQL query and fetch set farewell message for current guild (or retrieve default)
-});
-
-// Member received new role? Praise him!
-client.on('guildMemberUpdate', member => {
-    console.log(`A user \`${member.user.tag}\` with id \`${member.user.id}\` has been updated`);
-})
 
 // Scan a message for triggers
 client.on('message', message => {

@@ -27,6 +27,7 @@
                     "dice6_emote"
                 ]
             },
+            "leveling_disabled": false,
             "roles": {
                 "owner": [
                     "role_id"

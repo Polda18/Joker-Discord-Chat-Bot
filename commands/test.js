@@ -1,3 +1,11 @@
+/*****************************************
+ * Joker Discord Bot
+ * Made by CZghost/Polda18, 2019
+ * ALPHA v0.0.1
+ * 
+ * File: test.js
+ *****************************************/
+
 const time_check = require("./inc/time_check.js");
 
 const switch_error = func => {
