@@ -30,7 +30,7 @@ module.exports.run = async (client, message, args) => {
         .addField("Server created at", server.createdAt, true)
         .addField("Server id", server.id)
         .setColor("RANDOM")
-        .setFooter(`Queried by ${message.author}`)
+        .setFooter(`Queried by ${message.author.tag}`)
         .setTimestamp();
     
     return message.channel.send(embed);

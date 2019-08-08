@@ -67,7 +67,7 @@ module.exports.check_permissions = (client, message, channel, permissions) => {
     // Has permissions will be replaced by the roles settings
     switch(permissions) {
         case this.DEVELOPER:
-            return client.settings.developers.channel === message.author.id
+            return client.settings.developers.chief === message.author.id
                 || client.settings.developers.helping.includes(message.author.id);
         case this.OWNER:
             return message.member.hasPermission(owner_perms);

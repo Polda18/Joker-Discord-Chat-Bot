@@ -170,6 +170,8 @@ fs.readdir("./commands/", (err, files) => {
     console.log("Done...");
 });
 
+client.on('error', console.error);
+
 // This will be run when the bot is ready to roll out
 client.on('ready', () => {
     console.log(`Logged in as \`${client.user.tag}\` with id \`${client.user.id}\``);  // Says when the bot is ready
