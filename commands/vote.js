@@ -77,8 +77,8 @@ module.exports.run = async (client, message, args) => {
             .setTitle(`Voting has started for: \`${topic}\``)
             .setColor("RANDOM")
             .setDescription("React with one of these emojis to vote AFTER they both appear!")
-            .addField("Yes", vote_yes, true)
-            .addField("No", vote_no, true)
+            .addField("Agree", vote_yes, true)
+            .addField("Disagree", vote_no, true)
             .addField("Started by", message.author)
             .setFooter(`Voting ends in ${specified_time}.`)
             .setTimestamp();

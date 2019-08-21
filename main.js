@@ -7,7 +7,7 @@
  *****************************************/
 
 // Required libraries
-require("dotenv").config();
+const enviro = require("dotenv").config();
 const Discord = require("discord.js");
 const client = new Discord.Client({disableEveryone: true});
 const MySQL = require("mysql");
@@ -107,7 +107,7 @@ client.settings = {
 client.contact = {
     email: "marpolda@gmail.com",        // Chief developer contact email
     issue_tracker: "https://github.com/Polda18/Joker-Discord-Chat-Bot/issues",  // Link to issue tracker
-    discord_dm: client.fetchUser(client.settings.developers.chief).tag,         // Get the chief developer discord user tag
+    discord_dm: process.env.chief_developer_tag,         // Get the chief developer discord user tag
     websites: "http://czghost.4fan.cz/contact/"          // Developer's sites
 };
 
@@ -162,9 +162,9 @@ fs.readdir("./commands/", (err, files) => {
 
     jsFiles.forEach((f, i) => {
         let props = require(`./commands/${f}`);
-        console.log(`Command file \`${f}\` loaded...`);
+        console.log(`[${i}] Command file \`${f}\` loaded...`);
         client.commands_collection.set(props.helper.name, props);
-        console.log(`Command file \`${f}\` registered...`);
+        console.log(`[${i}] Command file \`${f}\` registered...`);
     });
 
     console.log("Done...");
@@ -182,8 +182,6 @@ client.on('message', async message => {
     if (message.channel.type === "dm" || message.channel.type === "group") return; // Ignore direct messages or group dm messages
     if (message.author.bot) return;     // Ignore messages by bots
 
-    
-    
     let prefix = client.current_settings.prefix;
     let msgArray = message.content.split(/ +/);     // Split by any non-zero number of spaces
     let cmd = msgArray[0];
@@ -192,11 +190,10 @@ client.on('message', async message => {
 
     if(command) {
         // Alpha testing is allowed only in development guild! => Temporary
-        if (message.guild !== process.env.development_server) {
+        if (message.guild.id !== process.env.development_server) {
             // Guild ID isn't the ID of CZghost Development
 
-            await message.author.dmChannel.send(`\uD83D\uDCEC You tried to use me outside development server. Join https://discord.gg/${process.env.invite_link} for testing.`);
-            return await message.channel.send(`\u274C I'm sorry, ${message.author}, but Alpha testing is currently allowed only in development server: \uD83D\uDCEC`);          // \u274C => red cross mark; \uD83D\uDCEC => mailbox letter arrived
+            return await message.channel.send(`\u274C I'm sorry, ${message.author}, but Alpha testing is currently allowed only in development server: https://discord.gg/${process.env.invite_link}`);          // \u274C => red cross mark; \uD83D\uDCEC => mailbox letter arrived
         }
 
         command.run(client, message, args);
