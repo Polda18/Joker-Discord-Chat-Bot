@@ -96,7 +96,7 @@ client.settings = {
         })
     },
     developers: {   // Developers of this bot
-        chief: "370298001597399044",    // Chief developer (master) => fill in your own Discord id for your fork
+        chief: process.env.chief_developer,     // Chief developer (master) => from local system variable
         helping: []                  // Additional developers list (fill in programatically from mysql database)
     }
 };
@@ -155,7 +155,7 @@ client.commands_collection = new Discord.Collection();  // Save commands here
 // Load different commands with this primitive command handler
 fs.readdir("./commands/", (err, files) => {
     console.log("Loading and registering command files...");
-    if(err) console.log(err);
+    if(err) console.error(err);
 
     let jsFiles = files.filter(f => f.split(".").pop() === "js");
     if(jsFiles.length <= 0) return console.log("No commands found or an error occured.");
@@ -178,17 +178,27 @@ client.on('ready', () => {
 });
 
 // Scan a message for triggers
-client.on('message', message => {
+client.on('message', async message => {
     if (message.channel.type === "dm" || message.channel.type === "group") return; // Ignore direct messages or group dm messages
     if (message.author.bot) return;     // Ignore messages by bots
+
+    
     
     let prefix = client.current_settings.prefix;
-    let msgArray = message.content.split(" ");
+    let msgArray = message.content.split(/ +/);     // Split by any non-zero number of spaces
     let cmd = msgArray[0];
     let args = msgArray.slice(1);
     let command = client.commands_collection.get(cmd.slice(prefix.length));
 
     if(command) {
+        // Alpha testing is allowed only in development guild! => Temporary
+        if (message.guild !== process.env.development_server) {
+            // Guild ID isn't the ID of CZghost Development
+
+            await message.author.dmChannel.send(`\uD83D\uDCEC You tried to use me outside development server. Join https://discord.gg/${process.env.invite_link} for testing.`);
+            return await message.channel.send(`\u274C I'm sorry, ${message.author}, but Alpha testing is currently allowed only in development server: \uD83D\uDCEC`);          // \u274C => red cross mark; \uD83D\uDCEC => mailbox letter arrived
+        }
+
         command.run(client, message, args);
         console.log(`Command \`${command.helper.name}\` has been run by \`${message.author.tag}\` with id \`${message.author.id}\``);
     } else {
