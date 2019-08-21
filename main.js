@@ -170,7 +170,7 @@ fs.readdir("./commands/", (err, files) => {
     console.log("Done...");
 });
 
-client.on('error', console.error);
+client.on('error', e => console.error(e));
 
 // This will be run when the bot is ready to roll out
 client.on('ready', () => {
