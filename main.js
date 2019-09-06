@@ -6,203 +6,224 @@
  * File: main.js
  *****************************************/
 
+// Get the package information
+const package = require("./package.json");
+
 // Required libraries
-const enviro = require("dotenv").config();
-const Discord = require("discord.js");
-const client = new Discord.Client({disableEveryone: true});
-const MySQL = require("mysql");
-const fs = require("fs");
-const Long = require("long");
-// const DBL = require("dblapi.js");
+const {
+    Client,
+    Collection
+} = require("discord.js");          // Discord.js library -> main driver for this bot
+
+const MySQL = require("mysql");     // MySQL library -> keeps settings
+
+// Check for local environment variables instead of global system ones
+require("dotenv").config({path: `${__dirname}/.env`});
+
+// Import custom number literals for switches and errors
+const literals = require("./literals.js");
+const functions = require("./functions.js");
+
+// Create Discord client
+const client = new Client({disableEveryone: true});
 
 // Setup credentials
 client.credentials = {
-    token: process.env.token,
+    token:      process.env.TOKEN,
     mysql: {
-        host: process.env.mysql_host,
-        user: process.env.mysql_user,
-        pswd: process.env.mysql_pswd,
-        db: process.env.mysql_db
+        host:   process.env.MYSQL_HOST,
+        user:   process.env.MYSQL_USER,
+        pswd:   process.env.MYSQL_PSWD,
+        db:     process.env.MYSQL_DB
     },
-    dbl_token: process.env.dbl_token
+    dbl_token:  process.env.DBL_TOKEN
 };
 
-// const dbl = new DBL(client.credentials.dbl_token, client);
-
-// Load default settings => deprecated, gonna be replaced by the settings in settings
-client.default_settings = Object.freeze({
-    prefix: "$$",
-    diceroll_emoji_base: "\uFE0F\u20E3",        // Dice Roll command emoji base of keypads (used as "#\uFE0F\u20E3"
-                                                // where # is a digit from 1 to 6 = 6 sides of a dice)
-    coinflip_emoji_base: Object.freeze({
-        heads: "\uD83D\uDC78",    // Princess emoji
-        tails: "\uD83E\uDD85"     // Eagle emoji
-    }),
-    votepoll_emoji_base: Object.freeze({
-        vote_yes: "\uD83D\uDC4D",   // Thumbs up emoji
-        vote_no: "\uD83D\uDC4E"     // Thumbs down emoji
-    })
-});
-
-// Current settings as previously saved in MySQL database
+// Setup default settings (later to be completed by MySQL settings)
 client.settings = {
-    guilds: {       // Guild dependent settings filled programmatically (mapped by their ids) -> see templates
-        default: Object.freeze({  // Default settings for every guild not set specifically
-            prefix: "$$",
-            votepoll_emotes: Object.freeze({
-                default: true,
-                base: Object.freeze({
-                    vote_yes: "\uD83D\uDC4D",   // Thumbs up emoji
-                    vote_no: "\uD83D\uDC4E"     // Thumbs down emoji
-                })
-            }),
-            coinflip_emotes: Object.freeze({
-                default: true,
-                base: Object.freeze({
-                    heads: "\uD83D\uDC78",    // Princess emoji
-                    tails: "\uD83E\uDD85"     // Eagle emoji
-                })
-            }),
-            diceroll_emotes: Object.freeze({
-                default: true,
-                base: "\uFE0F\u20E3"    // Used as "#\uFE0F\u20E3" where # is the number from 1 to 6
-            }),
-            leveling_disabled: false,
-            roles: Object.freeze({
-                owner: Object.freeze([]),
-                admin: Object.freeze([]),
-                moderator: Object.freeze({
-                    general: null,
-                    channels: Object.freeze({})
+    guilds: {
+        default: Object.freeze({
+            prefix: process.env.DEFAULT_PREFIX,     // Bot prefix. Use this to prefix any content of messages you wish to use as commands
+            emotes_settings: Object.freeze({
+                voting: Object.freeze({
+                    default: true,          // Defines default => will be compared with default guild settings
+                    type: 'object',         // Type of the base => for voting emotes shall be always 'object'
+                    base: Object.freeze({
+                        agree: '\ud83d\udc4d',      // Agreement emote => defaults to Thumbs up emoji (unicode)
+                        disagree: '\ud83d\udc4e'    // Disagreement emote -> defaults to Thumbs down emoji (unicode)
+                    })
                 }),
-                developer: Object.freeze([]),
-                muted: Object.freeze({
-                    general: null,
-                    channels: Object.freeze({})
+                diceroll: Object.freeze({
+                    default: true,          // Defines default => will be compared with default guild settings
+                    type: 'string',         // Type of the base => string for default dice numbers suffix, otherwise array
+                    base: '\ufe0f\u20e3'    // Defaults to dice numbers suffix, which is a box for holding a number.
+                                            // Number before that defines the emoji to display (keypad unicode emojis)
+                                            // Naturally, dice numbers can be only [1-6] (including),
+                                            // 60 % of all keypad numbers (full keypad ranges numbers [0-9])
+                }),
+                coinflip: Object.freeze({
+                    default: true,          // Defines default => will be compared with default guild settings
+                    type: 'object',         // Type of the base => for coinflip emotes shall be always 'object'
+                    base: Object.freeze({
+                        heads: '\ud83d\udc78',      // Heads emote => defaults to Princess emoji (unicode)
+                        tails: '\ud83e\udd85'       // Tails emote => defaults to Eagle emoji (unicode)
+                    })
                 })
             }),
-            auditlog_channel: null,
-            swearing_words: Object.freeze([]),
-            welcomes: Object.freeze({
-                channel: "default",
-                message: "Welcome @user to @guild, have a great time!",
-                dm: null
+            leveling: Object.freeze({
+                disabled: false,            // Disables leveling for this guild (defaults to false === enable leveling)
+                channel: null,              // Channel to query user levels in (defaults to null === every channel allowed)
+                message: "@user has leveled up!"    // Message content of level up message (defaults to generic message)
             }),
-            farewells: Object.freeze({
-                channel: "default",
-                message: "`@user` left our great community. Let's hope he'll come back one time.",
-                dm: null
+            gaming: Object.freeze({         // Settings for server minigame: The Sims, Discord Edition
+                disabled: false,            // Disables minigame for this guild (defaults to false === enable minigame)
+                channel: null,              // Channel for playing the minigame in (defaults to null === every channel allowed)
+                config: Object.freeze({     // Minigame config for this guild
+                    enable: Object.freeze({
+                        gambling: true,
+                        robbing: true,
+                        working: true,
+                        trading: true,
+                        murders: true,
+                        education: true,
+                        debts: true,
+                        bills: true,
+                        jail: true,
+                        shop: true
+                    }),
+                    coins: Object.freeze({
+                        format: '#1,000.00',
+                        currency: '$'
+                    }),
+                    bills: Object.freeze({
+                        electricity: true,
+                        heating: true,
+                        water: true,
+                        television: true,
+                        radio: true,
+                        accomodation: true,
+                        jail: true,
+                        education: true
+                    })
+                })
+            }),
+            roles: Object.freeze({
+                owner: Object.freeze([]),   // Owner roles list (defaults to empty array)
+                admin: Object.freeze({
+                    chief: null,            // Chief administrator role (defaults to null === none role)
+                    channels: Object.freeze({})     // Channel dependent administrator roles list
+                                                    // (defaults to empty dictionary === none roles)
+                }),
+                moderator: Object.freeze({
+                    chief: null,            // Chief moderator role (defaults to null === none role)
+                    channels: Object.freeze({})     // Channel dependent administrator roles list
+                                                    // (defaults to empty dictionary === none roles)
+                }),
+                developer: Object.freeze([]),       // Developer roles (defaults to empty array)
+                muted: Object.freeze({
+                    global: null,           // Global role for muted users (muted server-wide)
+                                            // Defaults to null === none role
+                    channels: Object.freeze({})     // Channel dependent roles for muted users (muted only in that channel)
+                                                    // Defaults to empty dictionary === none roles
+                }),
+                auditlog_channel: null,     // Channel for audit logs of the bot (defaults to null === none channel)
+                swearing_filter: Object.freeze([]),     // Swearing filter with list of filtered words
+                                                        // (defaults to empty arraz === none words)
+                welcomes: Object.freeze({
+                    channel: null,          // Channel for posting welcomes into (defaults to null === general/default channel)
+                    content: "Welcome @user to @guild, have a great time. \ud83d\udc4d",     // Welcome message content
+                                            // (defaults to this ^ ... \ud83d\udc4d === thumbs up unicode emoji)
+                    dm: null                // Direct message content (defaults to null === don't post direct messages)
+                }),
+                farewells: Object.freeze({
+                    channel: null,          // Channel for posting farewells into (defaults to null === general/default channel)
+                    content: "@user has left. \ud83d\ude25 Live long and prosper. \ud83d\udd96",      // Farewell message content
+                                            // (defaults to this ^ ... \ud83d\ude25 === sad face with tear unicode emoji
+                                            // \ud83d\udd96 === vulcan gesture /courtesy of StarTrek franchise/ unicode emoji)
+                    dm: null                // Direct message content (defaults to null === don't post direct messages)
+                })
             })
         })
+        // Guild dependent settings will be added programatically by MySQL connection.
     },
-    developers: {   // Developers of this bot
-        chief: process.env.chief_developer,     // Chief developer (master) => from local system variable
-        helping: []                  // Additional developers list (fill in programatically from mysql database)
-    }
-};
-// Current settings => it needs to be filled by the mysql settings => settings per guild
-// Currently not used
+    developers: Object.freeze({
+        chief: process.env.CHIEF_DEVELOPER,     // The UUID (user unique ID) of the chief developer
+        assistants: []                          // Assisting developers of this bot (filled by MySQL connection)
+    })
+}
 
-// Contact informations
-client.contact = {
-    email: "marpolda@gmail.com",        // Chief developer contact email
-    issue_tracker: "https://github.com/Polda18/Joker-Discord-Chat-Bot/issues",  // Link to issue tracker
-    discord_dm: process.env.chief_developer_tag,         // Get the chief developer discord user tag
-    websites: "http://czghost.4fan.cz/contact/"          // Developer's sites
-};
-
-// Bans and mutes settings per guild
-client.bans = {};       // Bans issued in every guild (fill in using data fetched from MySQL database)
-client.mutes = {};      // Mutes issued in every guild (fill in using data fetched from MySQL database)
-
-// Users' experiences and levels per guild
-client.xp = {};         // Experiences and levels for each user per guild (fill in programatically)
-
-client.current_settings = {     // deprecated => gonna be deleted, refactored and replaced by mysql settings
-    prefix: "$$",
-    diceroll_emoji_default: true,       // will be false if set to custom
-    diceroll_emoji_base: "\uFE0F\u20E3",    // will be list of 6 emoji ids if set to custom
-    coinflip_emoji_default: true,       // will be false if set to custom
-    coinflip_emoji_base: {              // will be set of 2 emoji ids (heads/tails) if set to custom
-        heads: "\uD83D\uDC78",
-        tails: "\uD83E\uDD85"
-    },
-    votepoll_emoji_default: true,
-    votepoll_emoji_base: {
-        vote_yes: "\uD83D\uDC4D",
-        vote_no: "\uD83D\uDC4E"
-    },
-    roles_set: {
-        owner: false,       // If set, that settings will be id of the role
-        admin: false,
-        moderator: false,
-        developer: false
-    }
-};
-
-// PERFORM A MYSQL CONNECTION == TODO
-// client.mysql_connection = MySQL.createConnection({
-//     host: client.credentials.mysql.host,
-//     user: client.credentials.mysql.user,
-//     password: client.credentials.mysql.pswd
-// });
-
-// client.mysql_connection.connect();
-
-// Create a collection of bot commands
-client.commands_collection = new Discord.Collection();  // Save commands here
-
-// Load different commands with this primitive command handler
-fs.readdir("./commands/", (err, files) => {
-    console.log("Loading and registering command files...");
-    if(err) console.error(err);
-
-    let jsFiles = files.filter(f => f.split(".").pop() === "js");
-    if(jsFiles.length <= 0) return console.log("No commands found or an error occured.");
-
-    jsFiles.forEach((f, i) => {
-        let props = require(`./commands/${f}`);
-        console.log(`[${i}] Command file \`${f}\` loaded...`);
-        client.commands_collection.set(props.helper.name, props);
-        console.log(`[${i}] Command file \`${f}\` registered...`);
-    });
-
-    console.log("Done...");
-});
-
-client.on('error', e => console.error(e));
-
-// This will be run when the bot is ready to roll out
-client.on('ready', () => {
-    console.log(`Logged in as \`${client.user.tag}\` with id \`${client.user.id}\``);  // Says when the bot is ready
-});
-
-// Scan a message for triggers
-client.on('message', async message => {
-    if (message.channel.type === "dm" || message.channel.type === "group") return; // Ignore direct messages or group dm messages
-    if (message.author.bot) return;     // Ignore messages by bots
-
-    let prefix = client.current_settings.prefix;
-    let msgArray = message.content.split(/ +/);     // Split by any non-zero number of spaces
-    let cmd = msgArray[0];
-    let args = msgArray.slice(1);
-    let command = client.commands_collection.get(cmd.slice(prefix.length));
-
-    if(command) {
-        // Alpha testing is allowed only in development guild! => Temporary
-        if (message.guild.id !== process.env.development_server) {
-            // Guild ID isn't the ID of CZghost Development
-
-            return await message.channel.send(`\u274C I'm sorry, ${message.author}, but Alpha testing is currently allowed only in development server: https://discord.gg/${process.env.invite_link}`);          // \u274C => red cross mark; \uD83D\uDCEC => mailbox letter arrived
-        }
-
-        command.run(client, message, args);
-        console.log(`Command \`${command.helper.name}\` has been run by \`${message.author.tag}\` with id \`${message.author.id}\``);
-    } else {
-        // TODO: Swearing guard
-
-        // TODO: Experiences
+// Moderation and leveling activity of the bot
+client.activity = Object.freeze({
+    moderation: Object.freeze({
+        bans: {},       // Bans issued by the bot in every guild
+        mutes: {}       // Mutes issued by the bot in every guild
+    }),
+    other: {
+        leveling: {},   // Leveling of users in every guild (keeps settings for disabled leveling)
+        gaming: Object.freeze({     // Minigame on server: settings for every guild for every user (keeps settings for disabled)
+            working: {},            // Users currently working
+            coins: {},              // Current amount of coins of users
+            dead: {},               // Users currently dead
+            jail: {}                // Users currently in jail
+        })
     }
 });
 
-client.login(client.credentials.token);     // Login the bot to the Discord service
+// Perform MySQL connection => todo
+
+// Create collections for commands and their aliases
+client.commands = new Collection();
+client.aliases  = new Collection();
+
+// Create a presence list
+client.presenceList = {};
+
+// Get handlers
+["command"].forEach(handler => require(`./handlers/${handler}`)(client));
+
+// BEGIN: Events will be moved to upcoming event handler
+
+client.on("ready", () => {
+    console.log(`Bot logged in as \`${client.user.tag}\`, user ID: \`${client.user.id}\``);
+
+    const chiefdev = client.fetchUser(process.env.CHIEF_DEVELOPER);
+
+    // Fetch contact informations
+    client.contact = {
+        email: process.env.CONTACT_EMAIL,
+        issue_tracker: process.env.CONTACT_ISSUES,
+        discord_dm: (chiefdev) ? chiefdev.tag : null,
+        websites: process.env.CONTACT_WEBSITES
+    }
+
+    // Do presence updates
+    functions.updatePresenceList(client, package);
+    functions.setupPresenceTimer(client, package);
+});
+
+client.on("guildCreate", async guild => {
+    console.log(`Bot joined a new server: \`${guild.name}\`; ID: \`${guild.id}\``);
+
+    // Do presence updates
+    functions.updatePresenceList(client, package);
+    functions.setupPresenceTimer(client, package);
+});
+
+client.on("guildDelete", async guild => {
+    console.log(`Bot left a server: \`${guild.name}\`; ID: \`${guild.id}\``);
+
+    // Do presence updates
+    functions.updatePresenceList(client, package);
+    functions.setupPresenceTimer(client, package);
+});
+
+client.on("message", message => {
+    // TODO
+});
+
+client.on("error", e => console.error(e));
+
+// END: Events
+
+// Login the bot to the Discord service
+client.login(client.credentials.token);
