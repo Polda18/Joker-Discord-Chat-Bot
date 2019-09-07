@@ -17,15 +17,35 @@ const {
 
 const MySQL = require("mysql");     // MySQL library -> keeps settings
 
+const colors = require("colors");   // Colouring the Node.js output
+colors.setTheme({
+    silly: 'rainbow',
+    input: 'grey',
+    verbose: 'cyan',
+    prompt: 'grey',
+    info: 'green',
+    data: 'grey',
+    help: 'cyan',
+    warn: 'yellow',
+    debug: 'blue',
+    error: 'red'
+})
+
 // Check for local environment variables instead of global system ones
 require("dotenv").config({path: `${__dirname}/.env`});
 
-// Import custom number literals for switches and errors
-const literals = require("./literals.js");
-const functions = require("./functions.js");
+// Import certain functions to be used
+const {
+    updatePresenceList,
+    setupPresenceTimer,
+    updatePresenceData
+} = require("./functions.js");
 
 // Create Discord client
 const client = new Client({disableEveryone: true});
+
+// Assign console colors to the client
+client.colors = colors;
 
 // Setup credentials
 client.credentials = {
@@ -40,6 +60,8 @@ client.credentials = {
 };
 
 // Setup default settings (later to be completed by MySQL settings)
+// Settings is using locale strings. Locale is defined by wrapping content in #locale{} between those brackets {}
+// Content inside brackets {} is then path to the locale string. There is nothing allowed before or after locale string.
 client.settings = {
     guilds: {
         default: Object.freeze({
@@ -73,7 +95,7 @@ client.settings = {
             leveling: Object.freeze({
                 disabled: false,            // Disables leveling for this guild (defaults to false === enable leveling)
                 channel: null,              // Channel to query user levels in (defaults to null === every channel allowed)
-                message: "@user has leveled up!"    // Message content of level up message (defaults to generic message)
+                message: "#locale{leveling:level_up:message}"    // Message content of level up message (defaults to generic message)
             }),
             gaming: Object.freeze({         // Settings for server minigame: The Sims, Discord Edition
                 disabled: false,            // Disables minigame for this guild (defaults to false === enable minigame)
@@ -107,41 +129,31 @@ client.settings = {
                     })
                 })
             }),
-            roles: Object.freeze({
-                owner: Object.freeze([]),   // Owner roles list (defaults to empty array)
-                admin: Object.freeze({
-                    chief: null,            // Chief administrator role (defaults to null === none role)
-                    channels: Object.freeze({})     // Channel dependent administrator roles list
-                                                    // (defaults to empty dictionary === none roles)
-                }),
-                moderator: Object.freeze({
-                    chief: null,            // Chief moderator role (defaults to null === none role)
-                    channels: Object.freeze({})     // Channel dependent administrator roles list
-                                                    // (defaults to empty dictionary === none roles)
-                }),
-                developer: Object.freeze([]),       // Developer roles (defaults to empty array)
-                muted: Object.freeze({
-                    global: null,           // Global role for muted users (muted server-wide)
-                                            // Defaults to null === none role
-                    channels: Object.freeze({})     // Channel dependent roles for muted users (muted only in that channel)
-                                                    // Defaults to empty dictionary === none roles
-                }),
-                auditlog_channel: null,     // Channel for audit logs of the bot (defaults to null === none channel)
-                swearing_filter: Object.freeze([]),     // Swearing filter with list of filtered words
-                                                        // (defaults to empty arraz === none words)
-                welcomes: Object.freeze({
-                    channel: null,          // Channel for posting welcomes into (defaults to null === general/default channel)
-                    content: "Welcome @user to @guild, have a great time. \ud83d\udc4d",     // Welcome message content
-                                            // (defaults to this ^ ... \ud83d\udc4d === thumbs up unicode emoji)
-                    dm: null                // Direct message content (defaults to null === don't post direct messages)
-                }),
-                farewells: Object.freeze({
-                    channel: null,          // Channel for posting farewells into (defaults to null === general/default channel)
-                    content: "@user has left. \ud83d\ude25 Live long and prosper. \ud83d\udd96",      // Farewell message content
-                                            // (defaults to this ^ ... \ud83d\ude25 === sad face with tear unicode emoji
-                                            // \ud83d\udd96 === vulcan gesture /courtesy of StarTrek franchise/ unicode emoji)
-                    dm: null                // Direct message content (defaults to null === don't post direct messages)
-                })
+            auditlog_channel: null,     // Channel for audit logs of the bot (defaults to null === none channel)
+            swearing_filter: Object.freeze([]),     // Swearing filter with list of filtered words
+                                                    // (defaults to empty arraz === none words)
+            welcomes: Object.freeze({
+                channel: null,          // Channel for posting welcomes into (defaults to null === general/default channel)
+                content: "#locale{welcomes:message}",     // Welcome message content
+                                        // (defaults to this ^)
+                dm: null                // Direct message content (defaults to null === don't post direct messages)
+            }),
+            farewells: Object.freeze({
+                channel: null,          // Channel for posting farewells into (defaults to null === general/default channel)
+                content: "#locale{farewells:message}",      // Farewell message content
+                                        // (defaults to this ^)
+                dm: null                // Direct message content (defaults to null === don't post direct messages)
+            }),
+            query: Object.freeze({
+                channel: null,              // Restriction to one channel for query (info) commands (defaults to null === every channel)
+                imunity: ['ADMINISTRATOR']  // Imunity for certain permissions (defaults to 'ADMINISTRATOR' === server OP)
+                                            // Full list of permissions can be accessed here:
+                                            // https://discord.js.org/#/docs/main/stable/class/Permissions?scrollTo=s-FLAGS
+            }),
+            locale: 'en-US',                // Locale settings (defaults to 'en-US')
+            muting_roles: Object.freeze({
+                global: null,               // Global muting role (need to be set in order to mute users)
+                channels: Object.freeze({}) // Channel dependent muting roles (defaults to empty dictionary)
             })
         })
         // Guild dependent settings will be added programatically by MySQL connection.
@@ -155,10 +167,17 @@ client.settings = {
 // Moderation and leveling activity of the bot
 client.activity = Object.freeze({
     moderation: Object.freeze({
-        bans: {},       // Bans issued by the bot in every guild
-        mutes: {}       // Mutes issued by the bot in every guild
+        warns: {},      // Warns currently issued by the bot in every guild
+        bans: {},       // Bans currently issued by the bot in every guild
+        mutes: {},      // Mutes currenlty issued by the bot in every guild
+        statistics: Object.freeze({
+            warns: {},  // User dependent statistics of warns issued by the bot in every guild
+            bans: {},   // User dependent statistics of bans issued by the bot in every guild
+            kicks: {},  // User dependent statistics of kicks issued by the bot in every guild
+            mutes: {}   // User dependent statistics of mutes issued by the bot in every guild
+        })
     }),
-    other: {
+    other: Object.freeze({
         leveling: {},   // Leveling of users in every guild (keeps settings for disabled leveling)
         gaming: Object.freeze({     // Minigame on server: settings for every guild for every user (keeps settings for disabled)
             working: {},            // Users currently working
@@ -166,7 +185,7 @@ client.activity = Object.freeze({
             dead: {},               // Users currently dead
             jail: {}                // Users currently in jail
         })
-    }
+    })
 });
 
 // Perform MySQL connection => todo
@@ -175,14 +194,15 @@ client.activity = Object.freeze({
 client.commands = new Collection();
 client.aliases  = new Collection();
 
-// Create a presence list
+// Create a presence list => currently empty (will be filled by program)
 client.presenceList = {};
 
 // Get handlers
-["command"].forEach(handler => require(`./handlers/${handler}`)(client));
+["command"].forEach(handler => require(`./handlers/${handler}.js`)(client));
 
 // BEGIN: Events will be moved to upcoming event handler
 
+// Bot logged in event
 client.on("ready", () => {
     console.log(`Bot logged in as \`${client.user.tag}\`, user ID: \`${client.user.id}\``);
 
@@ -197,31 +217,64 @@ client.on("ready", () => {
     }
 
     // Do presence updates
-    functions.updatePresenceList(client, package);
-    functions.setupPresenceTimer(client, package);
+    updatePresenceList(client, package);
+    setupPresenceTimer(client);
 });
 
+// Bot joined a server event
 client.on("guildCreate", async guild => {
     console.log(`Bot joined a new server: \`${guild.name}\`; ID: \`${guild.id}\``);
 
     // Do presence updates
-    functions.updatePresenceList(client, package);
-    functions.setupPresenceTimer(client, package);
+    updatePresenceList(client, package);
+    updatePresenceData(client, 'JOIN');
+
+    console.log(`Presence updated for `)
 });
 
+// Bot left a server event (or server was deleted)
 client.on("guildDelete", async guild => {
     console.log(`Bot left a server: \`${guild.name}\`; ID: \`${guild.id}\``);
 
     // Do presence updates
-    functions.updatePresenceList(client, package);
-    functions.setupPresenceTimer(client, package);
+    updatePresenceList(client, package);
+    updatePresenceData(client, 'LEAVE');
 });
 
-client.on("message", message => {
-    // TODO
+// New message event
+client.on("message", async message => {
+    // Get prefix from server settings
+    let server_id = message.guild.id;           // Get the server ID
+    let guild_set = Object.prototype.hasOwnProperty.call(client.settings.guilds, server_id);
+    const prefix = guild_set ? client.settings.guilds[server_id].prefix : client.settings.guilds.default.prefix;
+
+    if(message.author.bot) return;              // Ignore bot messages
+    if(!message.guild) return;                  // Ignore direct messages
+    if(!message.content.startsWith(prefix)) {   // Message doesn't start with prefix? It's not a command, actually
+        // Is the bot pinged? Return current command prefix
+        if(message.mentions.members.has(message.guild.me.id)) await message.reply(`my prefix for this server is ${prefix}`);
+
+        // And end event
+        return;
+    }
+
+    // Check if there is a message member
+    if(!message.member) message.member = await message.guild.fetchMember(message);
+
+    // Get args
+    const args = message.content.slice(prefix.length).trim().split(/ +/g);
+    const cmd  = args.shift().toLowerCase();
+
+    if(cmd.length === 0) return;                // Ignore empty command
+
+    let command = client.commands.get(cmd);     // Fetch command
+    if(!command) command = client.commands.get(client.aliases.get(cmd));        // If unsuccessful, check aliases
+
+    if (command) command.run(client, message, args);        // If a command was found, run it
 });
 
-client.on("error", e => console.error(e));
+// Error occured event
+client.on("error", e => console.error(e.error));
 
 // END: Events
 
