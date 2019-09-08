@@ -6,19 +6,35 @@
  * File: commands/info/ping.js
  *****************************************/
 
-const { stripIndents } = require("common-tags");
+const locales = require("../../locales.js");
 
 module.exports = {
     name: 'ping',
     help: {
-        description: '#locale{help:ping:description}',
+        description: '#locale{help:command:ping:description}',
         args: []
     },
     run: async (client, message, args) => {
-        const msg = await message.channel.send(`\ud83c\udfd3 Pinging ...`);     // \ud83c\udfd3 = Table-Tenis bat unicode emoji
+        // Check if a locale is set for this guild and fetch that settings
+        const server_id = message.guild.id;
+        const localeCode = (Object.prototype.hasOwnProperty.call(client.settings.guilds, server_id))
+            ? client.settings.guilds[server_id].locale
+            : client.settings.guilds.default.locale
+            || client.settings.guilds.default.locale;
 
-        return await msg.edit(stripIndents`\ud83c\udfd3 Pong!
-        Latency is ${Math.round(msg.createdTimestamp - message.createdTimestamp)} ms
-        API ping is ${Math.round(client.ping)} ms`);
+        // Fetch setup message and send it
+        const setupMsg = locales.locale_strings.ping.setup[localeCode] || locales.locale_strings.ping.setup[locales.default_locale];
+        const msg = await message.channel.send(setupMsg);
+
+        // Fetch formatted done message
+        const doneMsg = locales.locale_strings.ping.done[localeCode] || locales.locale_strings.ping.done[locales.default_locale];
+        
+        // Replace format marks for usable variables
+        const doneMsgRaw = doneMsg
+            .replace('@message_latency', Math.round(msg.createdTimestamp - message.createdTimestamp))
+            .replace('@api_latency', Math.round(client.ping));
+
+        // Put raw formatted done message
+        return await msg.edit(doneMsgRaw);
     }
 }

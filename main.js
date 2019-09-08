@@ -8,6 +8,7 @@
 
 // Get the package information
 const package = require("./package.json");
+const locales = require("./locales.js");
 
 // Required libraries
 const {
@@ -252,7 +253,24 @@ client.on("message", async message => {
     if(!message.guild) return;                  // Ignore direct messages
     if(!message.content.startsWith(prefix)) {   // Message doesn't start with prefix? It's not a command, actually
         // Is the bot pinged? Return current command prefix
-        if(message.mentions.members.has(message.guild.me.id)) await message.reply(`my prefix for this server is ${prefix}`);
+        if(message.mentions.members.has(message.guild.me.id)) {
+            // Fetch locale code
+            const localeCode = (Object.prototype.hasOwnProperty.call(client.settings.guilds, server_id))
+                ? client.settings.guilds[server_id].locale
+                : client.settings.guilds.default.locale
+                || client.settings.guilds.default.locale;
+            
+            // Fetch prefix message
+            const prefixMsg = locales.locale_strings.get_prefix[localeCode] || locales.locale_strings.get_prefix[locales.default_locale];
+
+            // Replace formatting code for prefix
+            const prefixMsgRaw = prefixMsg.replace('@prefix', prefix);
+            
+            // Return prefix message
+            await message.reply(prefixMsgRaw);
+            console.log(prefix);
+            console.log(prefixMsgRaw);
+        }
 
         // And end event
         return;

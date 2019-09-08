@@ -25,6 +25,8 @@ module.exports = {
 
     // Get a member from a string (or message) => to be used by a message event
     getMember: (message, toFind = '') => {
+        if(!toFind) return message.member;      // No query defined? Return message author member
+
         toFind = toFind.toLowerCase();          // Convert the user to find to all lowercase
 
         let target = message.guild.members.get(toFind);     // Try to get the member by its ID
@@ -32,15 +34,14 @@ module.exports = {
         if (!target && message.mentions.members)            // ID not found?
             target = message.mentions.members.first();      // Get the first member mention it can find
         
-        if(!target && toFind) {                             // Mention not found?
+        if(!target) {                             // Mention not found?
             target = message.guild.members.find(
                 m => m.displayName.toLowerCase().includes(toFind) || m.user.tag.toLowerCase().includes(toFind)
             );          // Get the user tag or nick by its fragment
         }
 
-        if(!target && toFind) { target = null;      // Still not found? That's an error, right?
-        } else {
-            target = message.member;                // No query defined? Get the member from message author
+        if(!target) {
+            target = null;      // Still not found? That's an error, right?
         }
 
         return target;
@@ -98,7 +99,7 @@ module.exports = {
             let index = client.presenceList.position;
             let current_presence = client.presenceList.list[index];
     
-            this.changePresence(client, 'online', 'PLAYING', current_presence);
+            module.exports.changePresence(client, 'online', 'PLAYING', current_presence);
             client.presenceList.position = (index + 1) % client.presenceList.list.length;
         }, 5000);
     },
@@ -111,17 +112,17 @@ module.exports = {
         // Change a presence to a message about a join or leave
         switch(event) {
             case 'JOIN':
-                this.changePresence(client, 'dnd', 'WATCHING', 'Joined a new server');
+                module.exports.changePresence(client, 'dnd', 'WATCHING', 'Joined a new server');
                 break;
             case 'LEAVE':
-                this.changePresence(client, 'dnd', 'WATCHING', 'Left a server');
+                module.exports.changePresence(client, 'dnd', 'WATCHING', 'Left a server');
                 break;
             default:
                 console.error('Invalid argument passed'.warn);
         }
 
         // Set a new interval after 5 seconds
-        setTimeout(() => this.setupPresenceTimer(client), 5000);
+        setTimeout(() => module.exports.setupPresenceTimer(client), 5000);
     },
 
     // Resolve locale string

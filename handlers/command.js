@@ -7,7 +7,7 @@
  *****************************************/
 
 const { readdirSync } = require("fs");
-const ASCII = requre("ascii-table");
+const ASCII = require("ascii-table");
 
 let table = new ASCII("Commands");
 table.setHeading("Command", "Load status");
@@ -30,5 +30,5 @@ module.exports = client => {
         }
     });
 
-    if(commands.map(c => c).length < 1) return console.error('No commands found'.error);
+    if(client.commands.map(c => c).length < 1) return console.error('No commands found'.error);
 }

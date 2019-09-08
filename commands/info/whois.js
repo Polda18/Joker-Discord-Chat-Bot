@@ -25,7 +25,7 @@ module.exports = {
         ]
     },
     run: async (client, message, args) => {
-        const member = getMember(args.join(' '));
+        const member = getMember(message, args.join(' '));
 
         // No member fetched? Return an error
         if(member === null) return message.channel.send(createError(`That user doesn't exist on this server, ${message.author}`));
@@ -34,29 +34,29 @@ module.exports = {
         let server_id = message.guild.id;
         let guild_set = Object.prototype.hasOwnProperty.call(client.settings.guilds, server_id);
 
-        const dateFormat = guild_set
-            ? client.settings.guilds[server_id].date_time.format
-            : client.settings.guilds.default.date_time.format;
+        const localeCode = guild_set
+            ? client.settings.guilds[server_id].locale
+            : client.settings.guilds.default.locale;
 
         // Member variables
-        const joined = formatDate(member.joinedAt, dateFormat);     // Format using guild date and time format settings
+        const joined = formatDate(member.joinedAt, localeCode);     // Format using guild date and time format settings
         const roles = member.roles
             .filter(r => r.id !== server_id)
             .map(r => r).join(', ') || '(none)';
         
         // User variables
-        const created = formatDate(member.user.createdAt, dateFormat);
+        const created = formatDate(member.user.createdAt, localeCode);
 
         const embed = new RichEmbed()
             .setFooter(`Queried by ${message.author.tag}`, message.author.displayAvatarURL)
             .setTitle(`User card`)
-            .setAuthor(member.diplayName, member.user.displayAvatarURL)
+            .setAuthor(member.displayName, member.user.displayAvatarURL)
             .setThumbnail(member.user.displayAvatarURL)
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
 
             .addField('Server member info',
             stripIndents`
-                **> Displayed name (own or nicked):** ${member.displayName}
+                **> Server nick:** ${member.displayName}
                 **> Member joined at:** ${joined}
                 **> Assigned roles:** ${roles}
             `.trim(), true)
@@ -69,7 +69,30 @@ module.exports = {
                 **> Account created at:** ${created}
             `.trim(), true);
         
-        // todo => playing a game
+        if(member.user.presence.game) {
+            let activity;
+
+            switch(member.user.presence.game.type) {
+                case 0:
+                    activity = 'Currently playing';
+                    break;
+                case 1:
+                    activity = 'Currently streaming';
+                    break;
+                case 2:
+                    activity = 'Currently listening';
+                    break;
+                case 3:
+                    activity = 'Currently watching';
+                    break;
+                default:
+                    activity = 'Currently doing';
+            }
+
+            embed.addField(activity, stripIndents`
+                **> Name:** ${member.user.presence.game.name}
+            `.trim());
+        }
         
         if(message.member.hasPermission([
             'MANAGE_MESSAGES',
@@ -94,12 +117,12 @@ module.exports = {
 
             embed
                 .addField('Moderation informations',
-                '<span style="color: red; background-color: black">***WARNING! These informations are meant for moderators and administrators only, but due to limitations, they are displayed publicily. Are you sure you want to display these informations here?***</span>')
+                '***WARNING!*** These informations are meant for moderators and administrators only, but due to limitations, they are displayed publicily. Are you sure you want to display these informations here?')
 
                 .addField('Speaking abilities',
                 stripIndents`
-                    **> Muted in:** <list of channel the member is muted in, or global mute>
-                    **> Time left until last mute wears off:** <time left>
+                    **> Muted in:** <channels>
+                    **> Time left:** <time left>
                 `.trim(), true)
 
                 .addField('Member violations',
@@ -111,5 +134,8 @@ module.exports = {
                 `.trim(), true)
         }
 
+        embed.setTimestamp();
+
+        return await message.channel.send(embed);
     }
 }

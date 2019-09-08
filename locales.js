@@ -13,10 +13,16 @@
  * adding another locale code
  *****************************************/
 
+const { stripIndents } = require("common-tags");
+
 // Translations
 module.exports = {
     default_locale: 'en-US',
     locale_strings: {
+        get_prefix: {
+            'en-US': 'my prefix for this server is `@prefix`',
+            'cs-CZ': 'můj prefix pro tento server je `@prefix`'
+        },
         leveling: {
             level_up: {
                 message: {
@@ -85,6 +91,24 @@ module.exports = {
                             // \ud83d\udd96 === vulcan gesture /courtesy of StarTrek franchise/ unicode emoji
             }
         },
+        ping: {
+            setup: {
+                'en-US': '\ud83c\udfd3 Pinging ...',        // \ud83c\udfd3 = Table-Tenis bat unicode emoji
+                'cs-CZ': '\ud83c\udfd3 Zjišťuji ...'
+            },
+            done: {
+                'en-US': stripIndents`
+                \ud83c\udfd3 Pong!
+                Latency is @message_latency ms
+                API ping is @api_latency ms
+                `.trim(),
+                'cs-CZ': stripIndents`
+                \ud83c\udfd3 Hotovo!
+                Zpoždění je @message_latency ms
+                Ping bota je @api_latency ms
+                `.trim()
+            }
+        },
         help: {
             type: {
                 mention: {
@@ -112,10 +136,24 @@ module.exports = {
                     'cs-CZ': 'text'
                 }
             },
-            attribute: {
-                required: {
-                    'en-US': 'Required parameter',
-                    'cs-CZ': 'Vyžadovaný parametr'
+            embed: {
+                title: {
+                    'en-US': 'Help file for `@command`',
+                    'cs-CZ': 'Nápověda pro příkaz `@command`'
+                },
+                attribute: {
+                    required: {
+                        'en-US': 'Required parameter',
+                        'cs-CZ': 'Vyžadovaný parametr'
+                    },
+                    empty: {
+                        'en-US': 'No arguments',
+                        'cs-CZ': 'Bez argumentů'
+                    }
+                },
+                arguments: {
+                    'en-US': 'Arguments',
+                    'cs-CZ': 'Argumenty'
                 }
             },
             command: {
