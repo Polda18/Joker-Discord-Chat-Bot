@@ -262,14 +262,15 @@ client.on("message", async message => {
             
             // Fetch prefix message
             const prefixMsg = locales.locale_strings.get_prefix[localeCode] || locales.locale_strings.get_prefix[locales.default_locale];
+            
+            // Escape dollar characters with double dollars, where applicable (due to behaviour of replace method)
+            const prefixEscaped = prefix.replace(/\$/g, '$$$$');    // Four dollars since two dollars in replace string mean one dollar
 
             // Replace formatting code for prefix
-            const prefixMsgRaw = prefixMsg.replace('@prefix', prefix);
+            const prefixMsgRaw = prefixMsg.replace(/@prefix/g, prefixEscaped);    // Use escaped sequence
             
             // Return prefix message
             await message.reply(prefixMsgRaw);
-            console.log(prefix);
-            console.log(prefixMsgRaw);
         }
 
         // And end event
