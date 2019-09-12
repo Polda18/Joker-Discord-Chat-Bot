@@ -31,4 +31,6 @@ module.exports = client => {
     });
 
     if(client.commands.map(c => c).length < 1) return console.error('No commands found'.error);
+
+    console.log(table.toString());
 }

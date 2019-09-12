@@ -83,7 +83,7 @@ module.exports = {
                 'Ping me to get this server prefix',
                 `Hosted on ${server_num} server${server_num !== 1 ? 's' : ''}`,
                 'More informations about me, please visit GitHub',
-                package.homepage
+                'http://bit.ly/JokerBot'
             ],
             position: 0
         }
