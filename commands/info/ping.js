@@ -31,8 +31,8 @@ module.exports = {
         
         // Replace format marks for usable variables
         const doneMsgRaw = doneMsg
-            .replace('@message_latency', Math.round(msg.createdTimestamp - message.createdTimestamp))
-            .replace('@api_latency', Math.round(client.ping));
+            .replace(/\[message_latency\]/g, Math.round(msg.createdTimestamp - message.createdTimestamp))
+            .replace(/\[api_latency\]/g, Math.round(client.ping));
 
         // Put raw formatted done message
         return await msg.edit(doneMsgRaw);

@@ -74,7 +74,7 @@ module.exports = {
     },
 
     // Update presence list
-    updatePresenceList: (client, package) => {
+    updatePresenceList: client => {
         let server_num = client.guilds.map(g => g).length;
 
         client.presenceList = {
@@ -90,7 +90,7 @@ module.exports = {
     },
 
     // Set up presence timer
-    setupPresenceTimer: (client) => {
+    setupPresenceTimer: client => {
         // If there is an interval set, clear the interval (has to be in try/catch block, in case interval ID is ivalid)
         if(client.tickPresence) try { clearInterval(client.tickPresence) } catch(e) { console.error(e) };
         
@@ -118,7 +118,7 @@ module.exports = {
                 module.exports.changePresence(client, 'dnd', 'WATCHING', 'Left a server');
                 break;
             default:
-                console.error('Invalid argument passed'.warn);
+                console.error(`Invalid argument passed: updatePresenceData(client, event) => {event == ${event}}`);
         }
 
         // Set a new interval after 5 seconds
@@ -158,14 +158,14 @@ module.exports = {
         return availableLocales[localeCode];
     },
 
-    validatePermission: (permission) => {
+    validatePermission: permission => {
         if(typeof permission !== 'string' && !Array.isArray(permission)) return false;
 
         let validate = true;
 
         if(Array.isArray(permission)) {
             permission.forEach(p => {
-                validate = validate && Object.prototype.hasOwnProperty.call(Permissions.FLAGS, permission);
+                validate = validate && Object.prototype.hasOwnProperty.call(Permissions.FLAGS, p);
             });
 
             return validate;

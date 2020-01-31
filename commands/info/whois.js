@@ -3,70 +3,94 @@
  * Made by CZghost/Polda18, 2019
  * ALPHA v0.0.1
  * 
- * File: commands/info/ping.js
+ * File: commands/info/whois.js
  *****************************************/
 
 const { RichEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
-const { getMember, formatDate, createError } = require("../../functions.js");
+const { getMember, formatDate, createError, resolveLocale } = require("../../functions.js");
 
 module.exports = {
     name: 'whois',
-    aliases: [ 'who', 'user', 'info' ],
+    aliases: [
+        'who',
+        'user',
+        'info'
+    ],
     help: {
-        description: '#locale{help:whois:description}',
+        description: '#locale{help:command:whois:description}',
         args: [
             {
                 name: 'user_reference',
                 type: [ 'mention', 'id', 'fragment' ],
-                description: '#locale{help:whois:args:user_reference:description}',
+                description: '#locale{help:command:whois:args:user_reference:description}',
                 required: false
             }
         ]
     },
     run: async (client, message, args) => {
+        // Check if a locale is set for this guild and fetch that settings
+        const server_id = message.guild.id;
+        const localeCode = (Object.prototype.hasOwnProperty.call(client.settings.guilds, server_id))
+            ? client.settings.guilds[server_id].locale
+            : client.settings.guilds.default.locale
+            || client.settings.guilds.default.locale;
+        
+        // Get the member
         const member = getMember(message, args.join(' '));
 
         // No member fetched? Return an error
-        if(member === null) return message.channel.send(createError(`That user doesn't exist on this server, ${message.author}`));
-
-        // Check server date and time settings
-        let server_id = message.guild.id;
-        let guild_set = Object.prototype.hasOwnProperty.call(client.settings.guilds, server_id);
-
-        const localeCode = guild_set
-            ? client.settings.guilds[server_id].locale
-            : client.settings.guilds.default.locale;
+        if(member === null) {
+            let errorMessage = resolveLocale("#locale{commands:whois:errors:nouser}", localeCode);
+            let errorMessageRaw = errorMessage.replace(/\[author\]/g, message.author);
+            
+            return message.channel.send(createError(errorMessageRaw));
+        }
 
         // Member variables
-        const joined = formatDate(member.joinedAt, localeCode);     // Format using guild date and time format settings
+        const joined = formatDate(member.joinedAt, localeCode);     // Format date and time based on locale settings of guild
         const roles = member.roles
             .filter(r => r.id !== server_id)
-            .map(r => r).join(', ') || '(none)';
+            .map(r => r).join(', ') || resolveLocale("#locale{commands:whois:query:text_none}", localeCode);
         
         // User variables
         const created = formatDate(member.user.createdAt, localeCode);
 
         const embed = new RichEmbed()
-            .setFooter(`Queried by ${message.author.tag}`, message.author.displayAvatarURL)
-            .setTitle(`User card`)
+            .setFooter(resolveLocale("#locale{commands:whois:query:embed:footer}", localeCode)
+                .replace(/\[author\]/g, message.author.tag.replace(/\$/g, '$$$$')), message.author.displayAvatarURL)
+            .setTitle(resolveLocale("#locale{commands:whois:query:embed:title}", localeCode))
             .setAuthor(member.displayName, member.user.displayAvatarURL)
             .setThumbnail(member.user.displayAvatarURL)
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
 
-            .addField('Server member info',
+            .addField(resolveLocale("#locale{commands:whois:query:embed:server_member_info:caption}", localeCode),
             stripIndents`
-                **> Server nick:** ${member.displayName}
-                **> Member joined at:** ${joined}
-                **> Assigned roles:** ${roles}
+                **\\> ${
+                    resolveLocale("#locale{commands:whois:query:embed:server_member_info:description:nick}", localeCode)
+                }:** ${member.displayName}
+                **\\> ${
+                    resolveLocale("#locale{commands:whois:query:embed:server_member_info:description:joined}", localeCode)
+                }:** ${joined}
+                **\\> ${
+                    resolveLocale("#locale{commands:whois:query:embed:server_member_info:description:roles}", localeCode)
+                }:** ${roles}
             `.trim(), true)
 
-            .addField('User account info',
+            .addField(resolveLocale("#locale{commands:whois:query:embed:user_account_info:caption}", localeCode),
             stripIndents`
-                **> User ID:** ${member.user.id}
-                **> Username:** ${member.user.username}
-                **> Discord TAG:** ${member.user.tag}
-                **> Account created at:** ${created}
+                **\\> ${
+                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:id}", localeCode)
+                }:** ${member.user.id}
+                **\\> ${
+                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:username}", localeCode)
+                }:** ${member.user.username}
+                **\\> ${
+                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:tag}", localeCode)
+                }:** ${member.user.tag}
+                **\\> ${
+                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:created}", localeCode)
+                }:** ${created}
             `.trim(), true);
         
         if(member.user.presence.game) {
@@ -74,23 +98,27 @@ module.exports = {
 
             switch(member.user.presence.game.type) {
                 case 0:
-                    activity = 'Currently playing';
+                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:playing}", localeCode);
                     break;
                 case 1:
-                    activity = 'Currently streaming';
+                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:streaming}", localeCode);
                     break;
                 case 2:
-                    activity = 'Currently listening';
+                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:listening}", localeCode);
                     break;
                 case 3:
-                    activity = 'Currently watching';
+                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:watching}", localeCode);
                     break;
                 default:
-                    activity = 'Currently doing';
+                    // Probably never to be used, but still better safe than sorry
+                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:doing}", localeCode);
             }
 
             embed.addField(activity, stripIndents`
-                **> Name:** ${member.user.presence.game.name}
+                **\\> ${
+                    // Locale string for the name of the activity
+                    resolveLocale("#locale{commands:whois:query:embed:activity:description}", localeCode)
+                }:** ${member.user.presence.game.name}
             `.trim());
         }
         
@@ -99,10 +127,8 @@ module.exports = {
             'KICK_MEMBERS',
             'BAN_MEMBERS'
         ])) {
-            const warns         = client.activity.moderation.warns;
-            const bans          = client.activity.moderation.bans;
-            const mutes         = client.activity.moderation.mutes;
-            const statistics    = client.activity.moderation.statistics;
+            const mutes      = client.activity.moderation.mutes;
+            const statistics = client.activity.moderation.statistics;
 
             let amount = {
                 warns: 0,
@@ -111,26 +137,64 @@ module.exports = {
                 mutes: 0
             }
 
-            if(Object.prototype.hasOwnProperty.call(warns, server_id)) {
+            let speaking_abilities = {
+                muted_in: [],
+                time_left: resolveLocale("#locale{commands:whois:query:text_none}", localeCode)
+            }
+
+            if(Object.prototype.hasOwnProperty.call(statistics, server_id)) {
                 // todo
             }
 
-            embed
-                .addField('Moderation informations',
-                '***WARNING!*** These informations are meant for moderators and administrators only, but due to limitations, they are displayed publicily. Are you sure you want to display these informations here?')
+            if(Object.prototype.hasOwnProperty.call(mutes, server_id)) {
+                // todo
+            }
 
-                .addField('Speaking abilities',
+            if(Object)
+
+            embed
+                .addField(resolveLocale("#locale{commands:whois:query:embed:moderation:warning:caption}", localeCode),
+                resolveLocale("#locale{commands:whois:query:embed:moderation:warning:description}", localeCode))
+
+                .addField(resolveLocale("#locale{commands:whois:query:embed:moderation:speaking:caption}", localeCode),
                 stripIndents`
-                    **> Muted in:** <channels>
-                    **> Time left:** <time left>
+                    **\\> ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:speaking:description:muted_in}", localeCode)
+                    }:** ${speaking_abilities.muted_in.length > 0
+                        ? speaking_abilities.muted_in.join(', ')
+                        : resolveLocale("#locale{commands:whois:query:text_none}", localeCode)
+                    }
+                    **\\> ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:speaking:description:time_left}", localeCode)
+                    }:** ${speaking_abilities.time_left}
                 `.trim(), true)
 
-                .addField('Member violations',
+                .addField(resolveLocale("#locale{commands:whois:query:embed:moderation:violations:caption}", localeCode),
                 stripIndents`
-                    **> Has been warned** <number> time(s)
-                    **> Has been banned** <number> time(s)
-                    **> Has been kicked** <number> time(s)
-                    **> Has been muted** <number> time(s)
+                    **\\> ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:warned}", localeCode)
+                    }** ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                            .replace(/\[number\]/g, amount.warns)
+                    }
+                    **\\> ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:banned}", localeCode)
+                    }** ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                            .replace(/\[number\]/g, amount.bans)
+                    }
+                    **\\> ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:kicked}", localeCode)
+                    }** ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                            .replace(/\[number\]/g, amount.kicks)
+                    }
+                    **\\> ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:muted}", localeCode)
+                    }** ${
+                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                            .replace(/\[number\]/g, amount.mutes)
+                    }
                 `.trim(), true)
         }
 

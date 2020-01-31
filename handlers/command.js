@@ -6,6 +6,8 @@
  * File: handlers/command.js
  *****************************************/
 
+const colors = require("colors");
+
 const { readdirSync } = require("fs");
 const ASCII = require("ascii-table");
 
