@@ -10,6 +10,7 @@ const locales = require("../../locales.js");
 
 module.exports = {
     name: 'ping',
+    category: 'info',
     help: {
         description: '#locale{help:command:ping:description}',
         args: []

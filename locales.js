@@ -26,6 +26,12 @@ module.exports = {
         ]
     },
     locale_strings: {
+        categories: {
+            info: {
+                'en-US': 'Informative commands',
+                'cs-CZ': 'Informativní příkazy'
+            }
+        },
         get_prefix: {
             'en-US': 'my prefix for this server is `[prefix]`',
             'cs-CZ': 'můj prefix pro tento server je `[prefix]`'

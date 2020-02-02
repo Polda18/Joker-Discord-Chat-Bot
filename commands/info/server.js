@@ -12,10 +12,8 @@ const { formatDate, createError, resolveLocale } = require("../../functions.js")
 
 module.exports = {
     name: 'serverinfo',
-    aliases: [
-        'server',
-        'sinfo'
-    ],
+    aliases: [ 'server', 'sinfo' ],
+    category: 'info',
     help: {
         description: '#locale{help:command:serverinfo:description}',
         args: []

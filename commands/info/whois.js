@@ -12,11 +12,8 @@ const { getMember, formatDate, createError, resolveLocale } = require("../../fun
 
 module.exports = {
     name: 'whois',
-    aliases: [
-        'who',
-        'user',
-        'info'
-    ],
+    aliases: [ 'who', 'user', 'info' ],
+    category: 'info',
     help: {
         description: '#locale{help:command:whois:description}',
         args: [
