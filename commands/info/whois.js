@@ -37,12 +37,9 @@ module.exports = {
         const member = getMember(message, args.join(' '));
 
         // No member fetched? Return an error
-        if(member === null) {
-            let errorMessage = resolveLocale("#locale{commands:whois:errors:nouser}", localeCode);
-            let errorMessageRaw = errorMessage.replace(/\[author\]/g, message.author);
-            
-            return message.channel.send(createError(errorMessageRaw));
-        }
+        if(member === null)
+            return message.channel.send(createError(resolveLocale("#locale{commands:whois:errors:nouser}", localeCode)
+                .replace(/\[author\]/, message.author)));
 
         // Member variables
         const joined = formatDate(member.joinedAt, localeCode);     // Format date and time based on locale settings of guild

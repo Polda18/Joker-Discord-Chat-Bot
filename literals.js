@@ -8,6 +8,7 @@
 
 module.exports = {
     locales_map: {
+        // This is mapping of default countries to default language ISO 639-1 or 639-2 code without any country defined
         'af': 'af-ZA',
         'ar': 'ar-AE',
         'az': 'az-AZ',
@@ -85,8 +86,9 @@ module.exports = {
         'xh': 'xh-ZA',
         'zh': 'zh-CN',
         'zu': 'zu-ZA'
-    }
+    },
     locales: [
+        // List of all ISO 639-1 or 639-2 codes for languages, including their country codes designated
         'af',
         'af-ZA',
         'ar',
@@ -107,7 +109,6 @@ module.exports = {
         'ar-TN',
         'ar-YE',
         'az',
-        'az-AZ',
         'az-AZ',
         'be',
         'be-BY',
