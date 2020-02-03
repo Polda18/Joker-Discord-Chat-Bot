@@ -9,6 +9,10 @@
 // Get the package information
 const package = require("./package.json");
 const locales = require("./locales.js");
+const literals = require("./literals.js");
+
+const { readdirSync } = require("fs");
+const ASCII = require("ascii-table");
 
 // Required libraries
 const {
@@ -59,6 +63,40 @@ client.credentials = {
     },
     //dbl_token:  process.env.DBL_TOKEN
 };
+
+client.locales = {
+    fallback_locale: "en-US",
+    supported_locales: {
+        partially: [],
+        completely: [
+            'cs-CZ',
+            'en-GB',
+            'en-US'
+        ]
+    },
+    locale_strings: {}
+}
+
+const locales = readdirSync('./locales/').filter(f => f.endsWith(".json"));
+let table = new ASCII("Locales").setHeading("Locale", "Load Status");
+
+for(let file of locales) {
+    let pull = require(`./locales/${file}`);
+
+    if(pull.language in literals.locales) {
+        if(Object.prototype.hasOwnProperty.call(literals.locales_map, pull.language)) {
+            table.addRow(pull.language, 'Default language definition, skipping'.red);
+        } else {
+            client.locales.locale_strings[pull.language] = pull.content;
+            table.addRow(pull.language, 'Okay'.green);
+        }
+    } else if(pull.language == 'xx-XX') {
+        console.log('Template locale file found, ignoring');
+        table.addRow(pull.language, 'Template definition, ignored'.yellow);
+    } else {
+        table.addRow(pull.language, 'Error - not a language'.red);
+    }
+}
 
 // Setup default settings (later to be completed by MySQL settings)
 // Settings is using locale strings. Locale is defined by wrapping content in #locale{} between those brackets {}
