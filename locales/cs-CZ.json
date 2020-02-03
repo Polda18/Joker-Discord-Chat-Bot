@@ -1,14 +1,7 @@
 {
-    "#guides": {
-        "variables": "Words in square brackets [] designate variables to be used in the text. Those should not be translated, they serve as variable names",
-        "language": "Content of the language is ISO 639-1 code or ISO 639-2 code if previous is not applicable, with country code after dash, in following format: xx-XX. Always try to use country code where possible. Default language codes without a country code are mapped to default country codes. See list of language codes in literals.js or in locale content.",
-        "author": "This is your name and/or nickname. Not used in any code, this is merely just informative variable.",
-        "content": "The locale content is what is being filled in designated translated pieces. Follow comments (#property) for more info."
-    },
-    "language": "xx-XX",
+    "language": "cs-CZ",
     "author": "CZghost",
     "content": {
-        "#languages": "All language codes including their country identifier with their localized names",
         "languages": {
             "af": "",
             "af-ZA": "",
@@ -239,7 +232,6 @@
             "zu": "",
             "zu-ZA": ""
         },
-        "#events": "Events that may occur when a user interacts with the server",
         "events": {
             "levelup": {
                 "message": "[user]",
@@ -257,7 +249,6 @@
                 "mute": "[warns][time]"
             }
         },
-        "#commands": "Translation of commands output pieces and their help files",
         "commands": {
             "whois": {
                 "help": {
