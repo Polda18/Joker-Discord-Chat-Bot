@@ -3,6 +3,23 @@
     "author": "CZghost",
     "content": {
         "language": "English (United States)",
+        "events": {
+            "levelup": {
+                "message": "[user] has leveled up!",
+                "embed": {
+                    "caption": "Level up!",
+                    "content": "New XPs: [xp]; New level: [lvl]"
+                }
+            },
+            "guildjoin": {
+                "welcome": "Hi. Thank you for adding me to `[guild]`.",
+                "help": "Please run `[prefix]help` for informations on how to use my features and how to set up me for your server."
+            },
+            "swearguard": {
+                "warn": "Please refrain from swearing [user]. You have been warned [warns] time(s).",
+                "mute": "Maximum number of [warns] warns exceeded. You have been muted for [time] [user]"
+            }
+        },
         "commands": {
             "whois": {
                 "help": {
