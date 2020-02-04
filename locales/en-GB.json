@@ -5,82 +5,84 @@
         "language": "English (United Kingdom)",
         "events": {
             "levelup": {
-                "message": "[user]",
+                "message": "[user] has leveled up!",
                 "embed": {
-                    "caption": "",
-                    "content": "[xp][lvl]"
+                    "caption": "Level up!",
+                    "content": "New XPs: [xp]; New level: [lvl]"
                 }
             },
             "guildjoin": {
-                "welcome": "[guild]",
-                "help": "[prefix]"
+                "welcome": "Hi. Thank you for adding me to `[guild]`.",
+                "help": "Please run `[prefix]help` for informations on how to use my features and how to set up me for your server."
             },
-            "wearguard": {
-                "warn": "[user][warns]",
-                "mute": "[warns][time]"
+            "swearguard": {
+                "warn": "Please refrain from swearing [user]. You have been warned [warns] time(s).",
+                "mute": "Maximum number of [warns] warns exceeded. You have been muted for [time] [user]"
             }
         },
         "commands": {
             "whois": {
                 "help": {
-                    "description": "",
+                    "description": "Returns user information",
                     "args": {
-                        "user_refference": ""
+                        "user_reference": "Reference to user whose informations you wish to display"
                     }
                 },
                 "errors": {
-                    "nouser": "[author]"
+                    "nouser": "That user doesn't exist on this server, [author]."
                 },
                 "query": {
-                    "text_none": "",
+                    "text_none": "(none)",
                     "embed": {
+                        "footer": "Queried by [author]",
+                        "title": "User card",
                         "server_member_info": {
-                            "caption": "",
+                            "caption": "Server member info",
                             "description": {
-                                "nick": "",
-                                "joined": "",
-                                "roles": ""
+                                "nick": "Server nick",
+                                "joined": "Member joined at",
+                                "roles": "Assigned roles"
                             }
                         },
                         "user_account_info": {
-                            "caption": "",
+                            "caption": "User account info",
                             "description": {
-                                "id": "",
-                                "username": "",
-                                "tag": "",
-                                "created": ""
+                                "id": "User ID",
+                                "username": "Username",
+                                "tag": "Discord TAG",
+                                "created": "Account created at"
                             }
                         },
                         "activity": {
                             "caption": {
-                                "playing": "",
-                                "streaming": "",
-                                "listening": "",
-                                "watching": "",
-                                "doing": ""
+                                "playing": "Currently playing",
+                                "streaming": "Currently streaming",
+                                "listening": "Currently listening",
+                                "watching": "Currently watching",
+                                "doing": "Currently doing"
                             },
-                            "description": ""
+                            "description": "Name"
                         },
                         "moderation": {
                             "warning": {
-                                "caption": "",
-                                "description": ""
+                                "caption": "Moderation informations",
+                                "description": "***WARNING!*** These informations are meant for moderators and administrators only, but due to limitations, they are displayed publicily. Are you sure you want to display these informations here?"
                             },
                             "speaking": {
-                                "caption": "",
+                                "caption": "Speaking abilities",
                                 "description": {
-                                    "muted_in": "",
-                                    "time_left": ""
+                                    "muted_in": "Muted in",
+                                    "time_left": "Time left"
                                 }
                             },
                             "violations": {
-                                "caption": "",
+                                "caption": "Member violations",
                                 "description": {
-                                    "number": "[number]",
-                                    "warned": "",
-                                    "banned": "",
-                                    "kicked": "",
-                                    "muted": ""
+                                    "number": "[number] time(s)",
+                                    "warned": "Has been warned",
+                                    "banned": "Has been banned",
+                                    "kicked": "Has been kicked",
+                                    "muted": "Has been muted"
                                 }
                             }
                         }
@@ -89,28 +91,28 @@
             },
             "server": {
                 "help": {
-                    "description": ""
+                    "description": "Returns server information"
                 },
                 "query": {
-                    "footer": "[author]",
-                    "title": "",
+                    "footer": "Queried by [author]",
+                    "title": "Server info",
                     "basic_info": {
-                        "caption": "",
+                        "caption": "Basic info",
                         "description": {
-                            "id": "",
-                            "system_channel": "",
-                            "member_count": "",
-                            "region": ""
+                            "id": "Server ID",
+                            "system_channel": "System channel",
+                            "member_count": "Member count",
+                            "region": "Region"
                         }
                     }
                 }
             },
             "ping": {
                 "help": {
-                    "description": ""
+                    "description": "Returns latency and API ping"
                 },
-                "setup": "",
-                "done": "[message_latency][api_latency]"
+                "setup": "\ud83c\udfd3 Pinging ...",
+                "done": "\ud83c\udfd3 Pong!\nLatency is [message_latency] ms.\nAPI ping is [api_latency] ms."
             }
         }
     }

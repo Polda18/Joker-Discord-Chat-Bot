@@ -23,7 +23,7 @@
                 "welcome": "[guild]",
                 "help": "[prefix]"
             },
-            "wearguard": {
+            "swearguard": {
                 "warn": "[user][warns]",
                 "mute": "[user][warns][time]"
             }

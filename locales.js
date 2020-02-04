@@ -183,7 +183,7 @@ module.exports = {
                         server_member_info: {
                             caption: {
                                 'en-US': 'Server member info',
-                                'cs-CZ': 'Informace člena serveru'
+                                'cs-CZ': 'Informace o členu serveru'
                             },
                             description: {
                                 nick: {
@@ -203,7 +203,7 @@ module.exports = {
                         user_account_info: {
                             caption: {
                                 'en-US': 'User account info',
-                                'cs-CZ': 'Informace uživatelského účtu'
+                                'cs-CZ': 'Informace o uživatelském účtu'
                             },
                             description: {
                                 id: {

@@ -5,82 +5,84 @@
         "language": "Čeština (Česká republika)",
         "events": {
             "levelup": {
-                "message": "[user]",
+                "message": "[user] postoupil na novou úroveň!",
                 "embed": {
-                    "caption": "",
-                    "content": "[xp][lvl]"
+                    "caption": "Nová úroveň",
+                    "content": "Zkušenosti: [xp]; Úroveň: [lvl]"
                 }
             },
             "guildjoin": {
-                "welcome": "[guild]",
-                "help": "[prefix]"
+                "welcome": "Zdravím. Děkuji za přidání do `[guild]`.",
+                "help": "Proveďte příkaz `[prefix]help` pro nápovědu k používání mých funkcí a jak mne nastavit na vašem serveru."
             },
-            "wearguard": {
-                "warn": "[user][warns]",
-                "mute": "[warns][time]"
+            "swearguard": {
+                "warn": "Prosím, [user], vyvaruj se použití nadávek. Byl jsi [warns]x varován.",
+                "mute": "Maximální počet [warns] varování překročen. Na dobu [time] ti byl nasazen roubík, [user]."
             }
         },
         "commands": {
             "whois": {
                 "help": {
-                    "description": "",
+                    "description": "Vrátí informace o uživateli",
                     "args": {
-                        "user_refference": ""
+                        "user_reference": "Reference na uživatele, jehož informace si přeješ zobrazit"
                     }
                 },
                 "errors": {
-                    "nouser": "[author]"
+                    "nouser": "Tento uživatel na serveru není, [author]."
                 },
                 "query": {
-                    "text_none": "",
+                    "text_none": "(žádné)",
                     "embed": {
+                        "footer": "Vyžádal/-a si [author]",
+                        "title": "Členská karta",
                         "server_member_info": {
-                            "caption": "",
+                            "caption": "Informace o členu serveru",
                             "description": {
-                                "nick": "",
-                                "joined": "",
-                                "roles": ""
+                                "nick": "Přezdívka na serveru",
+                                "joined": "Člen se přidal",
+                                "roles": "Přiřazené role"
                             }
                         },
                         "user_account_info": {
-                            "caption": "",
+                            "caption": "Informace o uživatelském účtu",
                             "description": {
-                                "id": "",
-                                "username": "",
-                                "tag": "",
-                                "created": ""
+                                "id": "Uživatelské ID",
+                                "username": "Uživatelské jméno",
+                                "tag": "Štítek na Discordu",
+                                "created": "Účet vytvořen"
                             }
                         },
                         "activity": {
                             "caption": {
-                                "playing": "",
-                                "streaming": "",
-                                "listening": "",
-                                "watching": "",
-                                "doing": ""
+                                "playing": "Právě hraje",
+                                "streaming": "Právě vysílá",
+                                "listening": "Právě poslouchá",
+                                "watching": "Právě sleduje",
+                                "doing": "Právě dělá"
                             },
-                            "description": ""
+                            "description": "Název"
                         },
                         "moderation": {
                             "warning": {
-                                "caption": "",
-                                "description": ""
+                                "caption": "Informace pro moderátory",
+                                "description": "***VAROVÁNÍ!*** Tyto informace jsou určeny pouze moderátorům a administrátorům, ale kvůli jistým omezením jsou zobrazovány veřejně. Jste si jist/-a, že zde tyto informace chcete zobrazit?"
                             },
                             "speaking": {
-                                "caption": "",
+                                "caption": "Možnost projevu",
                                 "description": {
-                                    "muted_in": "",
-                                    "time_left": ""
+                                    "muted_in": "Má roubík v",
+                                    "time_left": "Zbývá ještě"
                                 }
                             },
                             "violations": {
-                                "caption": "",
+                                "caption": "Prohřešky člena",
                                 "description": {
-                                    "number": "[number]",
-                                    "warned": "",
-                                    "banned": "",
-                                    "kicked": "",
-                                    "muted": ""
+                                    "number": "[number]x",
+                                    "warned": "Celkem varován",
+                                    "banned": "Celkem zabanován",
+                                    "kicked": "Celkem vyhozen",
+                                    "muted": "Celkem měl roubík"
                                 }
                             }
                         }
@@ -89,28 +91,28 @@
             },
             "server": {
                 "help": {
-                    "description": ""
+                    "description": "Vrátí informace o serveru"
                 },
                 "query": {
-                    "footer": "[author]",
-                    "title": "",
+                    "footer": "Vyžádal/-a si [author]",
+                    "title": "Informace o serveru",
                     "basic_info": {
-                        "caption": "",
+                        "caption": "Základní informace",
                         "description": {
-                            "id": "",
-                            "system_channel": "",
-                            "member_count": "",
-                            "region": ""
+                            "id": "ID serveru",
+                            "system_channel": "Systémový kanál",
+                            "member_count": "Počet členů",
+                            "region": "Region"
                         }
                     }
                 }
             },
             "ping": {
                 "help": {
-                    "description": ""
+                    "description": "Vrátí zpoždění a ping bota"
                 },
-                "setup": "",
-                "done": "[message_latency][api_latency]"
+                "setup": "\ud83c\udfd3 Zjišťuji ...",
+                "done": "\ud83c\udfd3 Hotovo!\nZpoždění je [message_latency] ms.\nPing bota je [api_latency] ms."
             }
         }
     }
