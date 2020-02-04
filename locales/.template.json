@@ -1,7 +1,7 @@
 {
     "#guides": {
         "variables": "Words in square brackets [] designate variables to be used in the text. Those should not be translated, they serve as variable names",
-        "language": "Content of the language is ISO 639-1 code or ISO 639-2 code if previous is not applicable, with country code after dash, in following format: xx-XX. Always try to use country code where possible. Default language codes without a country code are mapped to default country codes. See list of language codes in literals.js or in wiki on GitHub.",
+        "language": "Content of the language is ISO 639-1 code or ISO 639-2 code if previous is not applicable, with country code after dash, in following format: xx-XX. Always try to use country code where possible. Default language codes without a country code are mapped to default country codes. See list of language codes in literals.js or in wiki on GitHub: https://github.com/Polda18/Joker-Discord-Chat-Bot/wiki/Languages",
         "author": "This is your name and/or nickname. Not used in any code, this is merely just informative variable.",
         "content": "The locale content is what is being filled in designated translated pieces. Follow comments (#property) for more info."
     },
