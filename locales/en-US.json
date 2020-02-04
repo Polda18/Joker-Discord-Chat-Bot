@@ -2,314 +2,70 @@
     "language": "en-US",
     "author": "CZghost",
     "content": {
-        "languages": {
-            "af": "Afrikaans",
-            "af-ZA": "Afrikaans (South Africa)",
-            "ar": "Arabic",
-            "ar-AE": "Arabic (United Arab Emirates)",
-            "ar-BH": "Arabic (Bahrain)",
-            "ar-DZ": "Arabic (Algeria)",
-            "ar-EG": "Arabic (Egypt)",
-            "ar-IQ": "Arabic (Iraq)",
-            "ar-JO": "Arabic (Jordan)",
-            "ar-KW": "Arabic (Kuwait)",
-            "ar-LB": "Arabic (Lebanon)",
-            "ar-LY": "Arabic (Libya)",
-            "ar-MA": "Arabic (Morocco)",
-            "ar-OM": "Arabic (Oman)",
-            "ar-QA": "Arabic (Qatar)",
-            "ar-SA": "Arabic (Saudi Arabia)",
-            "ar-SY": "Arabic (Syrian Arab Republic)",
-            "ar-TN": "Arabic (Tunisia)",
-            "ar-YE": "Arabic (Yemen)",
-            "az": "Azerbaijani",
-            "az-AZ": "Azerbaijani (Azerbaijan)",
-            "be": "Belarusian",
-            "be-BY": "Belarusian (Belarus)",
-            "bg": "Bulgarian",
-            "bg-BG": "Bulgarian (Bulgaria)",
-            "bs-BA": "Bosnian (Bosnia and Herzegovina)",
-            "ca": "Catalan",
-            "ca-ES": "Catalan (Spain)",
-            "cs": "Czech",
-            "cs-CZ": "Czech (Czech Republic)",
-            "cy": "Welsh",
-            "cy-GB": "Welsh (United Kingdom)",
-            "da": "Danish",
-            "da-DK": "Danish (Denmark)",
-            "de": "German",
-            "de-AT": "German (Austria)",
-            "de-CH": "German (Switzerland)",
-            "de-DE": "German (Germany)",
-            "de-LI": "German (Liechtenstein)",
-            "de-LU": "German (Luxembourg)",
-            "dv": "Divehi",
-            "dv-MV": "Divehi (Maldives)",
-            "el": "Greek",
-            "el-GR": "Greek (Greece)",
-            "en": "English",
-            "en-AU": "English (Australia)",
-            "en-BZ": "English (Belize)",
-            "en-CA": "English (Canada)",
-            "en-GB": "English (United Kingdom)",
-            "en-IE": "English (Ireland)",
-            "en-JM": "English (Jamaica)",
-            "en-KH": "English (Cambodia)",
-            "en-NZ": "English (New Zealand)",
-            "en-PH": "English (Philippines)",
-            "en-TT": "English (Trinidad and Tobago)",
-            "en-US": "English (United States)",
-            "en-ZA": "English (South Africa)",
-            "en-ZW": "English (Zimbabwe)",
-            "eo": "Esperanto",
-            "es": "Spanish",
-            "es-AR": "Spanish (Argentina)",
-            "es-BO": "Spanish (Bolivia)",
-            "es-CL": "Spanish (Chile)",
-            "es-CO": "Spanish (Colombia)",
-            "es-CR": "Spanish (Costa Rica)",
-            "es-DO": "Spanish (Dominican Republic)",
-            "es-EC": "Spanish (Ecuador)",
-            "es-ES": "Spanish (Spain)",
-            "es-GT": "Spanish (Guatemala)",
-            "es-HN": "Spanish (Honduras)",
-            "es-MX": "Spanish (Mexico)",
-            "es-NI": "Spanish (Nicaragua)",
-            "es-PA": "Spanish (Panama)",
-            "es-PE": "Spanish (Peru)",
-            "es-PR": "Spanish (Puerto Rico)",
-            "es-PY": "Spanish (Paraguay)",
-            "es-SV": "Spanish (El Salvador)",
-            "es-UY": "Spanish (Uruguay)",
-            "es-VE": "Spanish (Venezuela)",
-            "et": "Estonian",
-            "et-EE": "Estonian (Estonia)",
-            "eu": "Basque",
-            "eu-ES": "Basque (Spain)",
-            "fa": "Persian",
-            "fa-IR": "Persian (Iran)",
-            "fi": "Finnish",
-            "fi-FI": "Finnish (Finland)",
-            "fo": "Faroese",
-            "fo-FO": "Faroese (Faroe Islands)",
-            "fr": "French",
-            "fr-BE": "French (Belgium)",
-            "fr-CA": "French (Canada)",
-            "fr-CH": "French (Switzerland)",
-            "fr-FR": "French (France)",
-            "fr-LU": "French (Luxembourg)",
-            "fr-MC": "French (Monaco)",
-            "gl": "Galician",
-            "gl-ES": "Galician (Spain)",
-            "gu": "Gujarati",
-            "gu-IN": "Gujarati (India)",
-            "he": "Hebrew",
-            "he-IL": "Hebrew (Israel)",
-            "hi": "Hindi",
-            "hi-IN": "Hindi (India)",
-            "hr": "Croatian",
-            "hr-BA": "Croatian (Bosnia and Herzegovina)",
-            "hr-HR": "Croatian (Croatia)",
-            "hu": "Hungarian",
-            "hu-HU": "Hungarian (Hungary)",
-            "hy": "Armenian",
-            "hy-AM": "Armenian (Armenia)",
-            "id": "Indonesian",
-            "id-ID": "Indonesian (Indonesia)",
-            "is": "Icelandic",
-            "is-IS": "Icelandic (Iceland)",
-            "it": "Italian",
-            "it-CH": "Italian (Switzerland)",
-            "it-IT": "Italian (Italy)",
-            "ja": "Japanese",
-            "ja-JP": "Japanese (Japan)",
-            "ka": "Georgian",
-            "ka-GE": "Georgian (Georgia)",
-            "kk": "Kazakh",
-            "kk-KZ": "Kazakh (Kazakhstan)",
-            "kn": "Kannada",
-            "kn-IN": "Kannada (India)",
-            "ko": "Korean",
-            "ko-KR": "Korean (South Korea)",
-            "kok": "Konkani",
-            "kok-IN": "Konkani (India)",
-            "ky": "Kirghiz",
-            "ky-KG": "Kirghiz (Kyrgyzstan)",
-            "lt": "Lithuanian",
-            "lt-LT": "Lithuanian (Lithuania)",
-            "lv": "Latvian",
-            "lv-LV": "Latvian (Latvia)",
-            "mi": "Maori",
-            "mi-NZ": "Maori (New Zealand)",
-            "mk": "Macedonian",
-            "mk-MK": "Macedonian (Macedonia)",
-            "mn": "Mongolian",
-            "mn-MN": "Mongolian (Mongolia)",
-            "mr": "Marathi",
-            "mr-IN": "Marathi (India)",
-            "ms": "Malay",
-            "ms-BN": "Malay (Brunei Darussalam)",
-            "ms-MY": "Malay (Malaysia)",
-            "mt": "Maltese",
-            "mt-MT": "Maltese (Malta)",
-            "nb": "Norwegian Bokmål",
-            "nb-NO": "Norwegian Bokmål (Norway)",
-            "nl": "Dutch",
-            "nl-BE": "Dutch (Belgium)",
-            "nl-NL": "Dutch (Netherlands)",
-            "nn-NO": "Dutch (Norway)",
-            "ns": "Northern Sotho",
-            "ns-ZA": "Northern Sotho (South Africa)",
-            "pa": "Punjabi",
-            "pa-IN": "Punjabi (India)",
-            "pl": "Polish",
-            "pl-PL": "Polish (Poland)",
-            "ps": "Pashto",
-            "ps-AR": "Pashto (Argentina)",
-            "pt": "Portuguese",
-            "pt-BR": "Portuguese (Brazil)",
-            "pt-PT": "Portuguese (Portugal)",
-            "qu": "Quechua",
-            "qu-BO": "Quechua (Bolivia)",
-            "qu-EC": "Quechua (Ecuador)",
-            "qu-PE": "Quechua (Peru)",
-            "ro": "Romanian",
-            "ro-RO": "Romanian (Romania)",
-            "ru": "Russian",
-            "ru-RU": "Russian (Russia)",
-            "sa": "Sanskrit",
-            "sa-IN": "Sanskrit (India)",
-            "se": "Northern Sami",
-            "se-FI": "Northern Sami (Finland)",
-            "se-NO": "Northern Sami (Norway)",
-            "se-SE": "Northern Sami (Sweden)",
-            "sk": "Slovak",
-            "sk-SK": "Slovak (Slovakia)",
-            "sl": "Slovenian",
-            "sl-SI": "Slovenian (Slovenia)",
-            "sq": "Albanian",
-            "sq-AL": "Albanian (Albania)",
-            "sr-BA": "Serbian (Bosnia and Herzegovina)",
-            "sr-RS": "Serbian (Serbia)",
-            "sv": "Swedish",
-            "sv-FI": "Swedish (Finland)",
-            "sv-SE": "Swedish (Sweden)",
-            "sw": "Swahili",
-            "sw-KE": "Swahili (Kenya)",
-            "syr": "Syriac",
-            "syr-SY": "Syriac (Syria)",
-            "ta": "Tamil",
-            "ta-IN": "Tamil (India)",
-            "te": "Telugu",
-            "te-IN": "Telugu (India)",
-            "th": "Thai",
-            "th-TH": "Thai (Thailand)",
-            "tl": "Tagalog",
-            "tl-PH": "Tagalog (Philippines)",
-            "tn": "Tswana",
-            "tn-ZA": "Tswana (South Africa)",
-            "tr": "Turkish",
-            "tr-TR": "Turkish (Turkey)",
-            "tt": "Tatar",
-            "tt-RU": "Tatar (Russia)",
-            "ts": "Tsonga",
-            "uk": "Ukrainian",
-            "uk-UA": "Ukrainian (Ukraine)",
-            "ur": "Urdu",
-            "ur-PK": "Urdu (Pakistan)",
-            "uz": "Uzbek",
-            "uz-UZ": "Uzbek (Uzbekistan)",
-            "vi": "Vietnamese",
-            "vi-VN": "Vietnamese (Viet Nam)",
-            "xh": "Xhosa",
-            "xh-ZA": "Xhosa (South Africa)",
-            "zh": "Chinese",
-            "zh-CN": "Chinese (China)",
-            "zh-HK": "Chinese (Hong Kong)",
-            "zh-MO": "Chinese (Macao)",
-            "zh-SG": "Chinese (Singapore)",
-            "zh-TW": "Chinese (Taiwan)",
-            "zu": "Zulu",
-            "zu-ZA": "Zulu (South Africa)"
-        },
-        "events": {
-            "levelup": {
-                "message": "[user]",
-                "embed": {
-                    "caption": "",
-                    "content": "[xp][lvl]"
-                }
-            },
-            "guildjoin": {
-                "welcome": "[guild]",
-                "help": "[prefix]"
-            },
-            "wearguard": {
-                "warn": "[user][warns]",
-                "mute": "[warns][time]"
-            }
-        },
+        "language": "English (United States)",
         "commands": {
             "whois": {
                 "help": {
-                    "description": "",
+                    "description": "Returns user information",
                     "args": {
-                        "user_refference": ""
+                        "user_reference": "Reference to user whose informations you wish to display"
                     }
                 },
                 "errors": {
-                    "nouser": "[author]"
+                    "nouser": "That user doesn't exist on this server, [author]."
                 },
                 "query": {
-                    "text_none": "",
+                    "text_none": "(none)",
                     "embed": {
+                        "footer": "Queried by [author]",
+                        "title": "User card",
                         "server_member_info": {
-                            "caption": "",
+                            "caption": "Server member info",
                             "description": {
-                                "nick": "",
-                                "joined": "",
-                                "roles": ""
+                                "nick": "Server nick",
+                                "joined": "Member joined at",
+                                "roles": "Assigned roles"
                             }
                         },
                         "user_account_info": {
-                            "caption": "",
+                            "caption": "User account info",
                             "description": {
-                                "id": "",
-                                "username": "",
-                                "tag": "",
-                                "created": ""
+                                "id": "User ID",
+                                "username": "Username",
+                                "tag": "Discord TAG",
+                                "created": "Account created at"
                             }
                         },
                         "activity": {
                             "caption": {
-                                "playing": "",
-                                "streaming": "",
-                                "listening": "",
-                                "watching": "",
-                                "doing": ""
+                                "playing": "Currently playing",
+                                "streaming": "Currently streaming",
+                                "listening": "Currently listening",
+                                "watching": "Currently watching",
+                                "doing": "Currently doing"
                             },
-                            "description": ""
+                            "description": "Name"
                         },
                         "moderation": {
                             "warning": {
-                                "caption": "",
-                                "description": ""
+                                "caption": "Moderation informations",
+                                "description": "***WARNING!*** These informations are meant for moderators and administrators only, but due to limitations, they are displayed publicily. Are you sure you want to display these informations here?"
                             },
                             "speaking": {
-                                "caption": "",
+                                "caption": "Speaking abilities",
                                 "description": {
-                                    "muted_in": "",
-                                    "time_left": ""
+                                    "muted_in": "Muted in",
+                                    "time_left": "Time left"
                                 }
                             },
                             "violations": {
-                                "caption": "",
+                                "caption": "Member violations",
                                 "description": {
-                                    "number": "[number]",
-                                    "warned": "",
-                                    "banned": "",
-                                    "kicked": "",
-                                    "muted": ""
+                                    "number": "[number] time(s)",
+                                    "warned": "Has been warned",
+                                    "banned": "Has been banned",
+                                    "kicked": "Has been kicked",
+                                    "muted": "Has been muted"
                                 }
                             }
                         }
@@ -318,28 +74,28 @@
             },
             "server": {
                 "help": {
-                    "description": ""
+                    "description": "Returns server information"
                 },
                 "query": {
-                    "footer": "[author]",
-                    "title": "",
+                    "footer": "Queried by [author]",
+                    "title": "Server info",
                     "basic_info": {
-                        "caption": "",
+                        "caption": "Basic info",
                         "description": {
-                            "id": "",
-                            "system_channel": "",
-                            "member_count": "",
-                            "region": ""
+                            "id": "Server ID",
+                            "system_channel": "System channel",
+                            "member_count": "Member count",
+                            "region": "Region"
                         }
                     }
                 }
             },
             "ping": {
                 "help": {
-                    "description": ""
+                    "description": "Returns latency and API ping"
                 },
-                "setup": "",
-                "done": "[message_latency][api_latency]"
+                "setup": "\ud83c\udfd3 Pinging ...",
+                "done": "\ud83c\udfd3 Pong!\nLatency is [message_latency] ms.\nAPI ping is [api_latency] ms."
             }
         }
     }

@@ -74,7 +74,7 @@ client.locales = {
             'en-US'
         ]
     },
-    locale_strings: {}
+    locale_strings: {}      // Will be filled in programatically
 }
 
 const locales = readdirSync('./locales/').filter(f => f.endsWith(".json"));

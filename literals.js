@@ -61,7 +61,7 @@ module.exports = {
         'pl': 'pl-PL',
         'ps': 'ps-AR',
         'pt': 'pt-PT',
-        'qu': 'qu-BO',
+        'qu': 'qu-PE',
         'ro': 'ro-RO',
         'ru': 'ru-RU',
         'sa': 'sa-IN',
