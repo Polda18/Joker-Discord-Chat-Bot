@@ -10,6 +10,8 @@ const { Permissions } = require("discord.js");
 const locales = require("./locales.js");
 const literals = require("./literals.js");
 
+const colors = require("colors");
+
 module.exports = {
     createError: errorMessage => {
         return `\u274c ${errorMessage}`;        // \u274c = red cross mark unicode emoji
@@ -125,6 +127,54 @@ module.exports = {
         setTimeout(() => module.exports.setupPresenceTimer(client), 5000);
     },
 
+    // Temporary function to resolve locale string using new locales schema
+    resolveLocaleNew: (client, localeString, localeCode) => {
+        localeString = localeString.toLowerCase().trim();
+
+        // Anything else than #locale{<content>} isn't a locale string
+        if(!localeString.startsWith('#locale{') || !localeString.endsWith('}')) return localeString;
+
+        if(!literals.locales.includes(localeCode)) return null;     // Could not recognise locale code
+
+        if(Object.prototype.hasOwnProperty.call(literals.locales_map, localeCode))
+            localeCode = literals.locales_map[localeCode];          // No country code encountered, map to default country
+        
+        // Check a locale string for any matches
+        const regex = /#locale\{([a-zA-Z0-9_:]+)\}/g;
+
+        // Get the content of the brackets and split by colon
+        let content = regex.exec(localeString)[1].split(':');
+
+        // Check if the locale is available
+        let hasLocale = Object.prototype.hasOwnProperty.call(client.locales.localeStrings, localeCode);
+
+        let resolvedLocale = content.reduce((o, i) => {
+            try {
+                return o[i];
+            } catch(e) {
+                console.error(`Cannot find locale string \`${localeString}\` for language \`${localeCode}\`. Perhaps missing?`);
+                console.error(e);
+                return undefined;
+            }
+        }, client.locales.locale_strings[localeCode]);
+
+        if(!resolvedLocale || resolvedLocale === undefined) {
+            resolvedLocale = content.reduce((o, i) => {
+                try {
+                    return o[i];
+                } catch(e) {
+                    console.error(`Cannot find locale string \`${localeString}\` for language \`${localeCode}\`. Perhaps missing?`);
+                    console.error(e);
+                    return undefined;
+                }
+            }, client.locales.locale_strings[client.locales.fallback_locale]);
+
+            if(!resolvedLocale || resolvedLocale === undefined) return null;    // Undefined, returns to null
+        }
+
+        return resolvedLocale;      // Return a resolved locale then
+    },
+
     // Resolve locale string
     resolveLocale: (localeString, localeCode) => {
         localeString = localeString.toLowerCase().trim();
@@ -133,6 +183,9 @@ module.exports = {
         if(!localeString.startsWith('#locale{') || !localeString.endsWith('}')) return localeString;
 
         if(!literals.locales.includes(localeCode)) return null;     // Could not recognise locale code
+
+        if(Object.prototype.hasOwnProperty.call(literals.locales_map, localeCode))
+            localeCode = literals.locales_map[localeCode];          // No country code encountered, map to default country
 
         // Check a locale string for any matches
         const regex = /#locale\{([a-zA-Z0-9_:]+)\}/g;
@@ -145,6 +198,8 @@ module.exports = {
             try {
                 return o[i];        // Decompile string to an object reference
             } catch(e) {
+                console.error(`Cannot find locale string \`${localeString}\` for language \`${localeCode}\`. Perhaps missing?`);
+                console.error(e);
                 return undefined;   // If reached an unreachable end, return undefined (safe reference)
             }
         }, locales.locale_strings);
@@ -152,7 +207,7 @@ module.exports = {
         if(!availableLocales || availableLocales.constructor !== Object) return null;       // Reached an unreachable reference
 
         // Locale string for this locale code not found => use default locale code
-        if(!Object.prototype.hasOwnProperty.call(availableLocales, localeString)) return availableLocales[locales.default_locale];
+        if(!Object.prototype.hasOwnProperty.call(availableLocales, localeCode)) return availableLocales[locales.default_locale];
 
         // Get and return the correct locale string
         return availableLocales[localeCode];

@@ -18,7 +18,9 @@
             "swearguard": {
                 "warn": "Prosím, [user], vyvaruj se použití nadávek. Byl jsi [warns]x varován.",
                 "mute": "Maximální počet [warns] varování překročen. Na dobu [time] ti byl nasazen roubík, [user]."
-            }
+            },
+            "userjoin": "[user] se přidal k naší komunitě. \ud83d\udc4b Vítej a měj se tu dobře! \ud83d\ude0a",
+            "userleave": "[user] opustil naší komunitu. \ud83d\ude25 Žij dlouho a blaze. \ud83d\udd96"
         },
         "commands": {
             "whois": {
