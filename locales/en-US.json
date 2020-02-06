@@ -18,7 +18,9 @@
             "swearguard": {
                 "warn": "Please refrain from swearing [user]. You have been warned [warns] time(s).",
                 "mute": "Maximum number of [warns] warns exceeded. You have been muted for [time] [user]"
-            }
+            },
+            "userjoin": "[user] has joined our community. \ud83d\udc4b Welcome and have a nice day! \ud83d\ude0a",
+            "userleave": "[user] has left our community. \ud83d\ude25 Live long and prosper. \ud83d\udd96"
         },
         "commands": {
             "whois": {
