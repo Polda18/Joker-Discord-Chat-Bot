@@ -1,5 +1,5 @@
 # Joker Discord Chat Bot
-<!-- [![gitlocalized ](https://gitlocalize.com/repo/3898/whole_project/badge.svg)](https://gitlocalize.com/repo/3898/whole_project?utm_source=badge) -->
+[![gitlocalized ](https://gitlocalize.com/repo/3908/whole_project/badge.svg)](https://gitlocalize.com/repo/3908/whole_project?utm_source=badge)
 
 Discord chat bot for automated messages guard, users management and entertainment 
 
