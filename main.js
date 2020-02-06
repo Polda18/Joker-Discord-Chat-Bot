@@ -64,16 +64,9 @@ client.credentials = {
     //dbl_token:  process.env.DBL_TOKEN
 };
 
+// Setup locale strings
 client.locales = {
     fallback_locale: "en-US",
-    supported_locales: {
-        partially: [],
-        completely: [
-            'cs-CZ',
-            'en-GB',
-            'en-US'
-        ]
-    },
     locale_strings: {}      // Will be filled in programatically
 }
 

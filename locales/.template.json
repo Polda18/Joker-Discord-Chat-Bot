@@ -26,7 +26,9 @@
             "swearguard": {
                 "warn": "[user][warns]",
                 "mute": "[user][warns][time]"
-            }
+            },
+            "userjoin": "[user]",
+            "userleave": "[user]"
         },
         "#commands": "Translation of commands output pieces and their help files",
         "commands": {
