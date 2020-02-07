@@ -8,7 +8,9 @@
 
 const { RichEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
+
 const { formatDate, createError, resolveLocale } = require("../../functions.js");
+const literals = require("../../literals.js");
 
 module.exports = {
     name: 'serverinfo',
@@ -26,13 +28,16 @@ module.exports = {
             : client.settings.guilds.default.locale
             || client.settings.guilds.default.locale;
         
+        // Debug
+        console.log(`\`${message.guild.region}\``);
+        
         const embed = new RichEmbed()
             .setFooter(resolveLocale("#locale{commands:serverinfo:query:footer}", localeCode)
                 .replace(/\[author\]/g, message.author.tag.replace(/\$/g, '$$$$')), message.author.displayAvatarURL)
             .setTitle(resolveLocale("#locale{commands:serverinfo:query:title}", localeCode))
             .setAuthor(message.guild.name, message.guild.iconURL)
             .setThumbnail(message.guild.iconURL)
-            .setColor('RANDOM')
+            .setColor(literals.region_colors[message.guild.region])
 
             .addField(resolveLocale("#locale{commands:serverinfo:query:basic_info:caption}", localeCode),
             stripIndents`
@@ -47,7 +52,7 @@ module.exports = {
                 }:** ${message.guild.memberCount}
                 **\\> ${
                     resolveLocale("#locale{commands:serverinfo:query:basic_info:description:region}", localeCode)
-                }:** ${message.guild.region}
+                }:** ${literals.region_flags[message.guild.region]} ${resolveLocale(`#locale{regions:${message.guild.region}}`, localeCode)}
             `.trim())
         
         embed.setTimestamp();

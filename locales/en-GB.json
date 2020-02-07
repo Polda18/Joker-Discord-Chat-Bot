@@ -3,6 +3,22 @@
     "author": "CZghost",
     "content": {
         "language": "English (United Kingdom)",
+        "regions": {
+            "brazil": "Brazil",
+            "eu-central": "Central Europe",
+            "europe": "Europe",
+            "hongkong": "Hong Kong",
+            "india": "India",
+            "japan": "Japan",
+            "russia": "Russia",
+            "singapore": "Singapore",
+            "southafrica": "South Africa",
+            "sydney": "Sydney",
+            "us-central": "USA Central",
+            "us-east": "USA East",
+            "us-south": "USA South",
+            "us-west": "USA West"
+        },
         "events": {
             "levelup": {
                 "message": "[user] has leveled up!",

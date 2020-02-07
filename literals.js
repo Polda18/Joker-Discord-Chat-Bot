@@ -7,6 +7,40 @@
  *****************************************/
 
 module.exports = {
+    region_colors: {
+        // This maps embed colors to specified regions
+        'brazil': '#49bf41',        // Green
+        'eu-central': '#2632bd',    // Blue
+        'europe': '#2632bd',
+        'hongkong': '#b32e2e',      // Red
+        'india': '#ada134',         // Yellow
+        'japan': '#cf0e0e',         // Red
+        'russia': '#287fd1',        // Teal
+        'singapore': '#6b2323',     // Dark red
+        'southafrica': '#2e2929',   // Dark
+        'sydney': '#121575',        // Navy blue
+        'us-central': '#db3535',    // Red
+        'us-east': '#db3535',
+        'us-south': '#db3535',
+        'us-west': '#db3535'
+    },
+    region_flags: {
+        // This maps country flags to specified regions
+        'brazil': '\ud83c\udde7\ud83c\uddf7',       // Brazil flag
+        'eu-central': '\ud83c\uddea\ud83c\uddfa',   // Europe flag
+        'europe': '\ud83c\uddea\ud83c\uddfa',
+        'hongkong': '\ud83c\udded\ud83c\uddf0',     // Hong Kong flag
+        'india': '\ud83c\uddee\ud83c\uddf3',        // Flag of India
+        'japan': '\ud83c\uddef\ud83c\uddf5',        // Japan flag
+        'russia': '\ud83c\uddf7\ud83c\uddfa',       // Flag of Russia
+        'singapore': '\ud83c\uddf8\ud83c\uddec',    // Flag of Singapore
+        'southafrica': '\ud83c\uddff\ud83c\udde6',  // South Africa flag
+        'sydney': '\ud83c\udde6\ud83c\uddfa',       // Flag of Australia
+        'us-central': '\ud83c\uddfa\ud83c\uddf8',   // Flag of USA
+        'us-east': '\ud83c\uddfa\ud83c\uddf8',
+        'us-south': '\ud83c\uddfa\ud83c\uddf8',
+        'us-west': '\ud83c\uddfa\ud83c\uddf8'
+    },
     locales_map: {
         // This is mapping of default countries to default language ISO 639-1 or 639-2 code without any country defined
         'af': 'af-ZA',

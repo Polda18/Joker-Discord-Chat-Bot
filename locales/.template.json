@@ -10,6 +10,23 @@
     "content": {
         "#language": "Localized name of this language including country designation",
         "language": "",
+        "#regions": "Localized region names based on what Discord reports",
+        "regions": {
+            "brazil": "",
+            "eu-central": "",
+            "europe": "",
+            "hongkong": "",
+            "india": "",
+            "japan": "",
+            "russia": "",
+            "singapore": "",
+            "southafrica": "",
+            "sydney": "",
+            "us-central": "",
+            "us-east": "",
+            "us-south": "",
+            "us-west": ""
+        },
         "#events": "Events that may occur when a user interacts with the server",
         "events": {
             "levelup": {

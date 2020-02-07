@@ -70,10 +70,10 @@ client.locales = {
     locale_strings: {}      // Will be filled in programatically
 }
 
-const locales = readdirSync('./locales/').filter(f => f.endsWith(".json"));
+const locales_new = readdirSync('./locales/').filter(f => f.endsWith(".json"));
 let table = new ASCII("Locales").setHeading("Locale", "Load Status");
 
-for(let file of locales) {
+for(let file of locales_new) {
     let pull = require(`./locales/${file}`);
 
     if(pull.language in literals.locales) {

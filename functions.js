@@ -190,6 +190,9 @@ module.exports = {
         // Check a locale string for any matches
         const regex = /#locale\{([a-zA-Z0-9_:]+)\}/g;
 
+        // Debug
+        console.log(regex.exec(localeString));
+
         // Get the content of the brackets and split by colon
         let content = regex.exec(localeString)[1].split(':');
 

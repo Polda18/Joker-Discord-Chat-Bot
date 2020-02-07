@@ -7,6 +7,7 @@
  *****************************************/
 
 const locales = require("../../locales.js");
+const { resolveLocale } = require("../../functions.js");
 
 module.exports = {
     name: 'ping',
@@ -24,18 +25,15 @@ module.exports = {
             || client.settings.guilds.default.locale;
 
         // Fetch setup message and send it
-        const setupMsg = locales.locale_strings.ping.setup[localeCode] || locales.locale_strings.ping.setup[locales.default_locale];
+        const setupMsg = resolveLocale("#locale{commands:ping:setup}", localeCode);
         const msg = await message.channel.send(setupMsg);
 
-        // Fetch formatted done message
-        const doneMsg = locales.locale_strings.ping.done[localeCode] || locales.locale_strings.ping.done[locales.default_locale];
-        
-        // Replace format marks for usable variables
-        const doneMsgRaw = doneMsg
+        // Fetch formatted done message and replace format marks for usable variables
+        const doneMsg = resolveLocale("#locale{commands:ping:done}", localeCode)
             .replace(/\[message_latency\]/g, Math.round(msg.createdTimestamp - message.createdTimestamp))
             .replace(/\[api_latency\]/g, Math.round(client.ping));
 
         // Put raw formatted done message
-        return await msg.edit(doneMsgRaw);
+        return await msg.edit(doneMsg);
     }
 }

@@ -26,6 +26,64 @@ module.exports = {
         ]
     },
     locale_strings: {
+        regions: {
+            'brazil': {
+                'en-US': 'Brazil',
+                'cs-CZ': 'Brazílie'
+            },
+            'eu-central': {
+                'en-US': 'Central Europe',
+                'cs-CZ': 'Střední Evropa'
+            },
+            'europe': {
+                'en-US': 'Europe',
+                'cs-CZ': 'Evropa'
+            },
+            'hongkong': {
+                'en-US': 'Hong Kong',
+                'cs-CZ': 'Hong Kong'
+            },
+            'india': {
+                'en-US': 'India',
+                'cs-CZ': 'Indie'
+            },
+            'japan': {
+                'en-US': 'Japan',
+                'cs-CZ': 'Japonsko'
+            },
+            'russia': {
+                'en-US': 'Russia',
+                'cs-CZ': 'Rusko'
+            },
+            'singapore': {
+                'en-US': 'Singapore',
+                'cs-CZ': 'Singapur'
+            },
+            'southafrica': {
+                'en-US': 'South Africa',
+                'cs-CZ': 'Jižní Afrika'
+            },
+            'sydney': {
+                'en-US': 'Sydney',
+                'cs-CZ': 'Sydney'
+            },
+            'us-central': {
+                'en-US': 'U.S. Central',
+                'cs-CZ': 'Střed USA'
+            },
+            'us-east': {
+                'en-US': 'U.S. East',
+                'cs-CZ': 'Východ USA'
+            },
+            'us-south': {
+                'en-US': 'U.S. South',
+                'cs-CZ': 'Jih USA'
+            },
+            'us-west': {
+                'en-US': 'U.S. West',
+                'cs-CZ': 'Západ USA'
+            }
+        },
         categories: {
             info: {
                 'en-US': 'Informative commands',
@@ -112,15 +170,15 @@ module.exports = {
                 },
                 done: {
                     'en-US': stripIndents`
-                    \ud83c\udfd3 Pong!
-                    Latency is [message_latency] ms
-                    API ping is [api_latency] ms
-                    `.trim(),
+                        \ud83c\udfd3 Pong!
+                        Latency is [message_latency] ms
+                        API ping is [api_latency] ms
+                        `.trim(),
                     'cs-CZ': stripIndents`
-                    \ud83c\udfd3 Hotovo!
-                    Zpoždění je [message_latency] ms
-                    Ping bota je [api_latency] ms
-                    `.trim()
+                        \ud83c\udfd3 Hotovo!
+                        Zpoždění je [message_latency] ms
+                        Ping bota je [api_latency] ms
+                        `.trim()
                 }
             },
             serverinfo: {

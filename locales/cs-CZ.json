@@ -3,6 +3,22 @@
     "author": "CZghost",
     "content": {
         "language": "Čeština (Česká republika)",
+        "regions": {
+            "brazil": "Brazílie",
+            "eu-central": "Střední Evropa",
+            "europe": "Evropa",
+            "hongkong": "Hong Kong",
+            "india": "Indie",
+            "japan": "Japonsko",
+            "russia": "Rusko",
+            "singapore": "Singapur",
+            "southafrica": "Jižní Afrika",
+            "sydney": "Sydney",
+            "us-central": "Střed USA",
+            "us-east": "Východ USA",
+            "us-south": "Jih USA",
+            "us-west": "Západ USA"
+        },
         "events": {
             "levelup": {
                 "message": "[user] postoupil na novou úroveň!",
