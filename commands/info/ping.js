@@ -13,7 +13,7 @@ module.exports = {
     name: 'ping',
     category: 'info',
     help: {
-        description: '#locale{help:command:ping:description}',
+        description: '#locale{commands:ping:help:description}',
         args: []
     },
     run: async (client, message, args) => {
@@ -25,11 +25,11 @@ module.exports = {
             || client.settings.guilds.default.locale;
 
         // Fetch setup message and send it
-        const setupMsg = resolveLocale("#locale{commands:ping:setup}", localeCode);
+        const setupMsg = resolveLocale(client, "#locale{commands:ping:setup}", localeCode);
         const msg = await message.channel.send(setupMsg);
 
         // Fetch formatted done message and replace format marks for usable variables
-        const doneMsg = resolveLocale("#locale{commands:ping:done}", localeCode)
+        const doneMsg = resolveLocale(client, "#locale{commands:ping:done}", localeCode)
             .replace(/\[message_latency\]/g, Math.round(msg.createdTimestamp - message.createdTimestamp))
             .replace(/\[api_latency\]/g, Math.round(client.ping));
 

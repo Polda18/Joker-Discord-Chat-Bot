@@ -15,12 +15,12 @@ module.exports = {
     aliases: [ 'who', 'user', 'info' ],
     category: 'info',
     help: {
-        description: '#locale{help:command:whois:description}',
+        description: '#locale{commands:whois:help:description}',
         args: [
             {
                 name: 'user_reference',
                 type: [ 'mention', 'id', 'fragment' ],
-                description: '#locale{help:command:whois:args:user_reference:description}',
+                description: '#locale{commands:whois:help:args:user_reference:description}',
                 required: false
             }
         ]
@@ -38,52 +38,52 @@ module.exports = {
 
         // No member fetched? Return an error
         if(member === null)
-            return message.channel.send(createError(resolveLocale("#locale{commands:whois:errors:nouser}", localeCode)
+            return message.channel.send(createError(resolveLocale(client, "#locale{commands:whois:errors:nouser}", localeCode)
                 .replace(/\[author\]/, message.author)));
 
         // Member variables
         const joined = formatDate(member.joinedAt, localeCode);     // Format date and time based on locale settings of guild
         const roles = member.roles
             .filter(r => r.id !== server_id)
-            .map(r => r).join(', ') || resolveLocale("#locale{commands:whois:query:text_none}", localeCode);
+            .map(r => r).join(', ') || resolveLocale(client, "#locale{commands:whois:query:text_none}", localeCode);
         
         // User variables
         const created = formatDate(member.user.createdAt, localeCode);
 
         const embed = new RichEmbed()
-            .setFooter(resolveLocale("#locale{commands:whois:query:embed:footer}", localeCode)
+            .setFooter(resolveLocale(client, "#locale{commands:whois:query:embed:footer}", localeCode)
                 .replace(/\[author\]/g, message.author.tag.replace(/\$/g, '$$$$')), message.author.displayAvatarURL)
-            .setTitle(resolveLocale("#locale{commands:whois:query:embed:title}", localeCode))
+            .setTitle(resolveLocale(client, "#locale{commands:whois:query:embed:title}", localeCode))
             .setAuthor(member.displayName, member.user.displayAvatarURL)
             .setThumbnail(member.user.displayAvatarURL)
             .setColor(member.displayHexColor === '#000000' ? '#ffffff' : member.displayHexColor)
 
-            .addField(resolveLocale("#locale{commands:whois:query:embed:server_member_info:caption}", localeCode),
+            .addField(resolveLocale(client, "#locale{commands:whois:query:embed:server_member_info:caption}", localeCode),
             stripIndents`
                 **\\> ${
-                    resolveLocale("#locale{commands:whois:query:embed:server_member_info:description:nick}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:server_member_info:description:nick}", localeCode)
                 }:** ${member.displayName}
                 **\\> ${
-                    resolveLocale("#locale{commands:whois:query:embed:server_member_info:description:joined}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:server_member_info:description:joined}", localeCode)
                 }:** ${joined}
                 **\\> ${
-                    resolveLocale("#locale{commands:whois:query:embed:server_member_info:description:roles}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:server_member_info:description:roles}", localeCode)
                 }:** ${roles}
             `.trim(), true)
 
-            .addField(resolveLocale("#locale{commands:whois:query:embed:user_account_info:caption}", localeCode),
+            .addField(resolveLocale(client, "#locale{commands:whois:query:embed:user_account_info:caption}", localeCode),
             stripIndents`
                 **\\> ${
-                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:id}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:user_account_info:description:id}", localeCode)
                 }:** ${member.user.id}
                 **\\> ${
-                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:username}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:user_account_info:description:username}", localeCode)
                 }:** ${member.user.username}
                 **\\> ${
-                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:tag}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:user_account_info:description:tag}", localeCode)
                 }:** ${member.user.tag}
                 **\\> ${
-                    resolveLocale("#locale{commands:whois:query:embed:user_account_info:description:created}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:user_account_info:description:created}", localeCode)
                 }:** ${created}
             `.trim(), true);
         
@@ -92,26 +92,26 @@ module.exports = {
 
             switch(member.user.presence.game.type) {
                 case 0:
-                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:playing}", localeCode);
+                    activity = resolveLocale(client, "#locale{commands:whois:query:embed:activity:caption:playing}", localeCode);
                     break;
                 case 1:
-                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:streaming}", localeCode);
+                    activity = resolveLocale(client, "#locale{commands:whois:query:embed:activity:caption:streaming}", localeCode);
                     break;
                 case 2:
-                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:listening}", localeCode);
+                    activity = resolveLocale(client, "#locale{commands:whois:query:embed:activity:caption:listening}", localeCode);
                     break;
                 case 3:
-                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:watching}", localeCode);
+                    activity = resolveLocale(client, "#locale{commands:whois:query:embed:activity:caption:watching}", localeCode);
                     break;
                 default:
                     // Probably never to be used, but still better safe than sorry
-                    activity = resolveLocale("#locale{commands:whois:query:embed:activity:caption:doing}", localeCode);
+                    activity = resolveLocale(client, "#locale{commands:whois:query:embed:activity:caption:doing}", localeCode);
             }
 
             embed.addField(activity, stripIndents`
                 **\\> ${
                     // Locale string for the name of the activity
-                    resolveLocale("#locale{commands:whois:query:embed:activity:description}", localeCode)
+                    resolveLocale(client, "#locale{commands:whois:query:embed:activity:description}", localeCode)
                 }:** ${member.user.presence.game.name}
             `.trim());
         }
@@ -133,7 +133,7 @@ module.exports = {
 
             let speaking_abilities = {
                 muted_in: [],
-                time_left: resolveLocale("#locale{commands:whois:query:text_none}", localeCode)
+                time_left: resolveLocale(client, "#locale{commands:whois:query:text_none}", localeCode)
             }
 
             if(Object.prototype.hasOwnProperty.call(statistics, server_id)) {
@@ -147,46 +147,46 @@ module.exports = {
             if(Object)
 
             embed
-                .addField(resolveLocale("#locale{commands:whois:query:embed:moderation:warning:caption}", localeCode),
-                resolveLocale("#locale{commands:whois:query:embed:moderation:warning:description}", localeCode))
+                .addField(resolveLocale(client, "#locale{commands:whois:query:embed:moderation:warning:caption}", localeCode),
+                resolveLocale(client, "#locale{commands:whois:query:embed:moderation:warning:description}", localeCode))
 
-                .addField(resolveLocale("#locale{commands:whois:query:embed:moderation:speaking:caption}", localeCode),
+                .addField(resolveLocale(client, "#locale{commands:whois:query:embed:moderation:speaking:caption}", localeCode),
                 stripIndents`
                     **\\> ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:speaking:description:muted_in}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:speaking:description:muted_in}", localeCode)
                     }:** ${speaking_abilities.muted_in.length > 0
                         ? speaking_abilities.muted_in.join(', ')
-                        : resolveLocale("#locale{commands:whois:query:text_none}", localeCode)
+                        : resolveLocale(client, "#locale{commands:whois:query:text_none}", localeCode)
                     }
                     **\\> ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:speaking:description:time_left}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:speaking:description:time_left}", localeCode)
                     }:** ${speaking_abilities.time_left}
                 `.trim(), true)
 
-                .addField(resolveLocale("#locale{commands:whois:query:embed:moderation:violations:caption}", localeCode),
+                .addField(resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:caption}", localeCode),
                 stripIndents`
                     **\\> ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:warned}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:warned}", localeCode)
                     }** ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
                             .replace(/\[number\]/g, amount.warns)
                     }
                     **\\> ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:banned}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:banned}", localeCode)
                     }** ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
                             .replace(/\[number\]/g, amount.bans)
                     }
                     **\\> ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:kicked}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:kicked}", localeCode)
                     }** ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
                             .replace(/\[number\]/g, amount.kicks)
                     }
                     **\\> ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:muted}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:muted}", localeCode)
                     }** ${
-                        resolveLocale("#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
+                        resolveLocale(client, "#locale{commands:whois:query:embed:moderation:violations:description:number}", localeCode)
                             .replace(/\[number\]/g, amount.mutes)
                     }
                 `.trim(), true)

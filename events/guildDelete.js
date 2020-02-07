@@ -6,6 +6,11 @@
  * File: events/guildDelete.js
  *****************************************/
 
+const {
+    updatePresenceList,
+    updatePresenceData
+} = require("../functions.js");
+
 module.exports = {
     name: 'guildDelete',
     run: async (client, guild) => {

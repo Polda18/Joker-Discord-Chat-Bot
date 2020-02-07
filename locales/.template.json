@@ -49,6 +49,14 @@
         },
         "#commands": "Translation of commands output pieces and their help files",
         "commands": {
+            "testlocale": {
+                "help": {
+                    "description": "",
+                    "args": {
+                        "locale_string": ""
+                    }
+                }
+            },
             "whois": {
                 "help": {
                     "description": "",
@@ -117,7 +125,7 @@
                     }
                 }
             },
-            "server": {
+            "serverinfo": {
                 "help": {
                     "description": ""
                 },

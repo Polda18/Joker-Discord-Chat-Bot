@@ -6,51 +6,21 @@
  * File: main.js
  *****************************************/
 
-// Get the package information
-const package = require("./package.json");
-const locales = require("./locales.js");
+// Get the literals definitions
 const literals = require("./literals.js");
 
-const { readdirSync } = require("fs");
-const ASCII = require("ascii-table");
-
 // Required libraries
-const {
-    Client,
-    Collection
-} = require("discord.js");          // Discord.js library -> main driver for this bot
-
-const MySQL = require("mysql");     // MySQL library -> keeps settings
-
-const colors = require("colors");   // Colouring the Node.js output
-colors.setTheme({
-    silly: 'rainbow',
-    input: 'grey',
-    verbose: 'cyan',
-    prompt: 'grey',
-    info: 'green',
-    data: 'grey',
-    help: 'cyan',
-    warn: 'yellow',
-    debug: 'blue',
-    error: 'red'
-})
+const { Client, Collection } = require("discord.js");       // Discord.js library -> main driver for this bot
+const { readdirSync } = require("fs");                      // Reading directories/folders
+const ASCII = require("ascii-table");                       // ASCII table formatting
+const MySQL = require("mysql");                             // MySQL library -> keeps settings
+const colors = require("colors");                           // Colouring the Node.js output
 
 // Check for local environment variables instead of global system ones
 require("dotenv").config({path: `${__dirname}/.env`});
 
-// Import certain functions to be used
-const {
-    updatePresenceList,
-    setupPresenceTimer,
-    updatePresenceData
-} = require("./functions.js");
-
 // Create Discord client
 const client = new Client({disableEveryone: true});
-
-// Assign console colors to the client
-client.colors = colors;
 
 // Setup credentials
 client.credentials = {

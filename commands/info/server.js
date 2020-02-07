@@ -17,7 +17,7 @@ module.exports = {
     aliases: [ 'server', 'sinfo' ],
     category: 'info',
     help: {
-        description: '#locale{help:command:serverinfo:description}',
+        description: '#locale{commands:serverinfo:help:description}',
         args: []
     },
     run: async (client, message, args) => {
@@ -29,27 +29,27 @@ module.exports = {
             || client.settings.guilds.default.locale;
         
         const embed = new RichEmbed()
-            .setFooter(resolveLocale("#locale{commands:serverinfo:query:footer}", localeCode)
+            .setFooter(resolveLocale(client, "#locale{commands:serverinfo:query:footer}", localeCode)
                 .replace(/\[author\]/g, message.author.tag.replace(/\$/g, '$$$$')), message.author.displayAvatarURL)
-            .setTitle(resolveLocale("#locale{commands:serverinfo:query:title}", localeCode))
+            .setTitle(resolveLocale(client, "#locale{commands:serverinfo:query:title}", localeCode))
             .setAuthor(message.guild.name, message.guild.iconURL)
             .setThumbnail(message.guild.iconURL)
             .setColor(literals.region_colors[message.guild.region])
 
-            .addField(resolveLocale("#locale{commands:serverinfo:query:basic_info:caption}", localeCode),
+            .addField(resolveLocale(client, "#locale{commands:serverinfo:query:basic_info:caption}", localeCode),
             stripIndents`
                 **\\> ${
-                    resolveLocale("#locale{commands:serverinfo:query:basic_info:description:id}", localeCode)
+                    resolveLocale(client, "#locale{commands:serverinfo:query:basic_info:description:id}", localeCode)
                 }:** ${server_id}
                 **\\> ${
-                    resolveLocale("#locale{commands:serverinfo:query:basic_info:description:system_channel}", localeCode)
+                    resolveLocale(client, "#locale{commands:serverinfo:query:basic_info:description:system_channel}", localeCode)
                 }:** ${message.guild.systemChannel}
                 **\\> ${
-                    resolveLocale("#locale{commands:serverinfo:query:basic_info:description:member_count}", localeCode)
+                    resolveLocale(client, "#locale{commands:serverinfo:query:basic_info:description:member_count}", localeCode)
                 }:** ${message.guild.memberCount}
                 **\\> ${
-                    resolveLocale("#locale{commands:serverinfo:query:basic_info:description:region}", localeCode)
-                }:** ${literals.region_flags[message.guild.region]} ${resolveLocale(`#locale{regions:${message.guild.region}}`, localeCode)}
+                    resolveLocale(client, "#locale{commands:serverinfo:query:basic_info:description:region}", localeCode)
+                }:** ${literals.region_flags[message.guild.region]} ${resolveLocale(client, `#locale{regions:${message.guild.region}}`, localeCode)}
             `.trim())
         
         embed.setTimestamp();

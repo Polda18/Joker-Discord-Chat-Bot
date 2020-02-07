@@ -6,6 +6,11 @@
  * File: events/guildCreate.js
  *****************************************/
 
+const {
+    updatePresenceList,
+    updatePresenceData
+} = require("../functions.js");
+
 module.exports = {
     name: 'guildCreate',
     run: async (client, guild) => {

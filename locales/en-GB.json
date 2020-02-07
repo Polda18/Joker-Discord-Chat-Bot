@@ -39,6 +39,14 @@
             "userleave": "[user] has left our community. \ud83d\ude25 Live long and prosper. \ud83d\udd96"
         },
         "commands": {
+            "testlocale": {
+                "help": {
+                    "description": "Tests translation features",
+                    "args": {
+                        "locale_string": "String that needs to be converted to translated text"
+                    }
+                }
+            },
             "whois": {
                 "help": {
                     "description": "Returns user information",
@@ -107,7 +115,7 @@
                     }
                 }
             },
-            "server": {
+            "serverinfo": {
                 "help": {
                     "description": "Returns server information"
                 },

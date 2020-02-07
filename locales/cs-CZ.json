@@ -39,6 +39,14 @@
             "userleave": "[user] opustil naší komunitu. \ud83d\ude25 Žij dlouho a blaze. \ud83d\udd96"
         },
         "commands": {
+            "testlocale": {
+                "help": {
+                    "description": "Provádí test překladových funkcí",
+                    "args": {
+                        "locale_string": "Řetězec, který se má nahradit přeloženým textem"
+                    }
+                }
+            },
             "whois": {
                 "help": {
                     "description": "Vrátí informace o uživateli",
@@ -107,7 +115,7 @@
                     }
                 }
             },
-            "server": {
+            "serverinfo": {
                 "help": {
                     "description": "Vrátí informace o serveru"
                 },

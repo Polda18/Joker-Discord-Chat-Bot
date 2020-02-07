@@ -128,7 +128,7 @@ module.exports = {
     },
 
     // Temporary function to resolve locale string using new locales schema
-    resolveLocaleNew: (client, localeString, localeCode) => {
+    resolveLocale: (client, localeString, localeCode) => {
         localeString = localeString.toLowerCase().trim();
 
         // Anything else than #locale{<content>} isn't a locale string
@@ -140,13 +140,15 @@ module.exports = {
             localeCode = literals.locales_map[localeCode];          // No country code encountered, map to default country
         
         // Check a locale string for any matches
-        const regex = /#locale\{([a-zA-Z0-9_:]+)\}/g;
+        const regex = /#locale\{([a-zA-Z0-9\-_:]+)\}/g;
+        let regex_results = regex.exec(localeString);
+        if(!regex_results || regex_results === null) return null;   // Error, invalid input
 
         // Get the content of the brackets and split by colon
-        let content = regex.exec(localeString)[1].split(':');
+        let content = regex_results[1].split(':');
 
         // Check if the locale is available
-        let hasLocale = Object.prototype.hasOwnProperty.call(client.locales.localeStrings, localeCode);
+        let hasLocale = Object.prototype.hasOwnProperty.call(client.locales.locale_strings, localeCode);
 
         let resolvedLocale = content.reduce((o, i) => {
             try {
@@ -156,7 +158,7 @@ module.exports = {
                 console.error(e);
                 return undefined;
             }
-        }, client.locales.locale_strings[localeCode]);
+        }, (hasLocale) ? client.locales.locale_strings[localeCode] : client.locales.locale_strings[client.locales.fallback_locale]);
 
         if(!resolvedLocale || resolvedLocale === undefined) {
             resolvedLocale = content.reduce((o, i) => {
@@ -176,7 +178,7 @@ module.exports = {
     },
 
     // Resolve locale string
-    resolveLocale: (localeString, localeCode) => {
+    resolveLocaleOld: (localeString, localeCode) => {
         localeString = localeString.toLowerCase().trim();
 
         // Anything else than #locale{<content>} isn't a locale string
@@ -189,9 +191,11 @@ module.exports = {
 
         // Check a locale string for any matches
         const regex = /#locale\{([a-zA-Z0-9\-_:]+)\}/g;
+        let regex_results = regex.exec(localeString);
+        if(!regex_results || regex_results === null) return null;   // Error, invalid input
 
         // Get the content of the brackets and split by colon
-        let content = regex.exec(localeString)[1].split(':');
+        let content = regex_results[1].split(':');
 
         // Get the available locales for this locale string
         let availableLocales = content.reduce((o, i) => {

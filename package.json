@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/Polda18/Joker-Discord-Chat-Bot/issues"
   },
-  "homepage": "https://github.com/Polda18/Joker-Discord-Chat-Bot#readme",
+  "homepage": "https://polda18.github.io/Joker-Discord-Chat-Bot",
   "dependencies": {
     "ascii-table": "0.0.9",
     "colors": "^1.4.0",
