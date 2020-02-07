@@ -188,10 +188,7 @@ module.exports = {
             localeCode = literals.locales_map[localeCode];          // No country code encountered, map to default country
 
         // Check a locale string for any matches
-        const regex = /#locale\{([a-zA-Z0-9_:]+)\}/g;
-
-        // Debug
-        console.log(regex.exec(localeString));
+        const regex = /#locale\{([a-zA-Z0-9\-_:]+)\}/g;
 
         // Get the content of the brackets and split by colon
         let content = regex.exec(localeString)[1].split(':');

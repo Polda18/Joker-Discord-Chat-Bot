@@ -76,7 +76,7 @@ let table = new ASCII("Locales").setHeading("Locale", "Load Status");
 for(let file of locales_new) {
     let pull = require(`./locales/${file}`);
 
-    if(pull.language in literals.locales) {
+    if(literals.locales.includes(pull.language)) {
         if(Object.prototype.hasOwnProperty.call(literals.locales_map, pull.language)) {
             table.addRow(pull.language, 'Default language definition, skipping'.red);
         } else {
@@ -90,6 +90,9 @@ for(let file of locales_new) {
         table.addRow(pull.language, 'Error - not a language'.red);
     }
 }
+
+// Print out the contents of the table
+console.log(table.toString());
 
 // Setup default settings (later to be completed by MySQL settings)
 // Settings is using locale strings. Locale is defined by wrapping content in #locale{} between those brackets {}

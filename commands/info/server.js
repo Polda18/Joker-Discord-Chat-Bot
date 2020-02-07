@@ -28,9 +28,6 @@ module.exports = {
             : client.settings.guilds.default.locale
             || client.settings.guilds.default.locale;
         
-        // Debug
-        console.log(`\`${message.guild.region}\``);
-        
         const embed = new RichEmbed()
             .setFooter(resolveLocale("#locale{commands:serverinfo:query:footer}", localeCode)
                 .replace(/\[author\]/g, message.author.tag.replace(/\$/g, '$$$$')), message.author.displayAvatarURL)
