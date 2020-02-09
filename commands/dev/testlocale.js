@@ -6,7 +6,7 @@
  * File: commands/dev/testlocale.js
  *****************************************/
 
-const { RichEmbed } = require("discord.js");
+// const { RichEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
 const { createError, resolveLocale } = require("../../functions.js");
@@ -38,21 +38,33 @@ module.exports = {
         if(
             message.author.id !== client.settings.developers.chief &&
             !client.settings.developers.assistants.includes(message.author.id)
-        ) return message.channel.send("`error`: `not a developer`");
+        ) return message.channel.send(createError(
+            resolveLocale(client, "#locale{devs:errors:not_a_dev}", localeCode)
+            .replace(/\[user\]/g, message.author)));
         
         // Error = missing parameter
-        if(args.length < 1) return message.channel.send(createError("`error`: `missing parm`"));
+        if(args.length < 1) return message.channel.send(createError(resolveLocale(client, "#locale{commands:testlocale:errors:missing_parameter}", localeCode)));
         
         // Get the locale string
         let localeString = args[0];
 
         // If a locale code is specified use that one
-        let LocaleCodeSpec = (args.length > 1) ? args[1] : localeCode;
+        let localeCodeSpec = (args.length > 1) ? args[1] : localeCode;
 
         // Return resolved locale
         let query = stripIndents`
-            \`query\`: \`${localeString}\`
-            \`resolved\`: \`${resolveLocale(client, localeString, LocaleCodeSpec)}\`
+            \\> **${
+                resolveLocale(client, "#locale{commands:testlocale:query:queried_string}", localeCode)
+            }:** \`${localeString}\`
+            ${
+                (args.length > 1) ? stripIndents`
+                    \\> **${
+                        resolveLocale(client, "#locale{commands:testlocale:query:queried_language}", localeCode)
+                    }:** \`${localeCodeSpec}\`
+                `.trim() + '\n' : ""
+            }\\> **${
+                resolveLocale(client, "#locale{commands:testlocale:query:result}", localeCode)
+            }:** \`${resolveLocale(client, localeString, localeCodeSpec)}\`
         `.trim();
 
         await message.channel.send(query);

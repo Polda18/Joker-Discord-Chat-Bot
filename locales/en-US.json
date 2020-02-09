@@ -14,6 +14,11 @@
                 "seconds": "#{second}[1]#{seconds}[2+]"
             }
         },
+        "devs": {
+            "errors": {
+                "not_a_dev": "I'm sorry [user], but unfortunately, you're not my developer."
+            }
+        },
         "regions": {
             "brazil": "Brazil",
             "eu-central": "Central Europe",
@@ -56,6 +61,51 @@
                     "args": {
                         "locale_string": "String that needs to be converted to translated text"
                     }
+                }
+                ,
+                "errors": {
+                    "missing_parameter": "Missing parameter."
+                },
+                "query": {
+                    "queried_string": "Queried string",
+                    "queried_language": "Queried language",
+                    "result": "Result"
+                }
+            },
+            "shutdown": {
+                "help": {
+                    "description": "Shuts the bot down",
+                    "args": {
+                        "delay": {
+                            "description": "Specifies delay after the bot shuts down (default is 5s)"
+                        }
+                    }
+                },
+                "errors": {
+                    "invalid_format": "Invalid time format.",
+                    "internal_exception": "Internal exception. File a bug.",
+                    "unspecified_error": "Unspecified error. File a bug."
+                },
+                "notice": "Bot will shut down in [time]."
+            },
+            "testtime": {
+                "help": {
+                    "description": "Tests time input and returns formatted time output",
+                    "args": {
+                        "time_string": {
+                            "description": "Time input to test"
+                        }
+                    }
+                },
+                "errors": {
+                    "missing_parameter": "Missing parameter.",
+                    "invalid_format": "Invalid time format.",
+                    "internal_exception": "Internal exception. File a bug.",
+                    "unspecified_error": "Unspecified error. File a bug."
+                },
+                "query": {
+                    "queried_string": "Queried string",
+                    "result": "Result"
                 }
             },
             "whois": {

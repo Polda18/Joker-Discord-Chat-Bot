@@ -745,5 +745,20 @@ module.exports = {
 
         // Return formatted string = todo
         return parts.join(", ");
+    },
+
+    // Convert time module to miliseconds
+    timeToMiliseconds: time_module => {
+        let ms = 0;
+
+        ms += time_module.y * literals.time_constants.YEAR;
+        ms += time_module.m * literals.time_constants.MONTH;
+        ms += time_module.w * literals.time_constants.WEEK;
+        ms += time_module.d * literals.time_constants.DAY;
+        ms += time_module.h * literals.time_constants.HOUR;
+        ms += time_module.min * literals.time_constants.MINUTE;
+        ms += time_module.s * literals.time_constants.SECOND;
+
+        return ms;
     }
 }

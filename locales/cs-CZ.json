@@ -14,6 +14,11 @@
                 "seconds": "#{sekunda}[1]#{sekundy}[2-4]#{sekund}[5+]"
             }
         },
+        "devs": {
+            "errors": {
+                "not_a_dev": "Je mi líto, [user], ale nejste mým vývojářem."
+            }
+        },
         "regions": {
             "brazil": "Brazílie",
             "eu-central": "Střední Evropa",
@@ -56,6 +61,50 @@
                     "args": {
                         "locale_string": "Řetězec, který se má nahradit přeloženým textem"
                     }
+                },
+                "errors": {
+                    "missing_parameter": "Chybí parametr."
+                },
+                "query": {
+                    "queried_string": "Vyžádaný řetězec",
+                    "queried_language": "Vyžádaný jazyk",
+                    "result": "Výsledek"
+                }
+            },
+            "shutdown": {
+                "help": {
+                    "description": "Vypne bota",
+                    "args": {
+                        "delay": {
+                            "description": "Nastaví časovou prodlevu (výchozí je 5s)"
+                        }
+                    }
+                },
+                "errors": {
+                    "invalid_format": "Neplatný formát času.",
+                    "internal_exception": "Vnitřní chyba. Nahlašte bug.",
+                    "unspecified_error": "Nespecifikovaná chyba. Nahrašte bug."
+                },
+                "notice": "Bot se vypne za [time]."
+            },
+            "testtime": {
+                "help": {
+                    "description": "Otestuje vstup časového údaje a vrátí formátovaný čas",
+                    "args": {
+                        "time_string": {
+                            "description": "Časový údaj k otestování"
+                        }
+                    }
+                },
+                "errors": {
+                    "missing_parameter": "Chybí parametr.",
+                    "invalid_format": "Neplatný formát času.",
+                    "internal_exception": "Vnitřní chyba. Nahlašte bug.",
+                    "unspecified_error": "Nespecifikovaná chyba. Nahlašte bug."
+                },
+                "query": {
+                    "queried_string": "Vyžádaný řetězec",
+                    "result": "Výsledek"
                 }
             },
             "whois": {

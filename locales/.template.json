@@ -10,7 +10,7 @@
     "content": {
         "#language": "Localized name of this language including country designation",
         "language": "",
-        "#time": "Localized time units description tags in this format: #{string}[range] - there are no '[', ']', '{' and '}' allowed inside 'string' - anything outside this format gets ignored",
+        "#time": "Localized time units description tags in this format: #{string}[range] - there are no '[', ']', '{' and '}' allowed inside 'string' - anything outside this format gets ignored; 'range' can be a single number (specific count), range between two numbers (like 2-4) or number and higher (range between number and infinity, denoted like 5+)",
         "time": {
             "format": {
                 "years": "#{}[]",
@@ -20,6 +20,12 @@
                 "hours": "#{}[]",
                 "minutes": "#{}[]",
                 "seconds": "#{}[]"
+            }
+        },
+        "#devs": "Localized devs specified errors (mainly insufficient permissions - not to confuse with Discord permissions)",
+        "devs": {
+            "errors": {
+                "not_a_dev": "[user]"
             }
         },
         "#regions": "Localized region names based on what Discord reports",
@@ -65,8 +71,54 @@
                 "help": {
                     "description": "",
                     "args": {
-                        "locale_string": ""
+                        "locale_string": {
+                            "description": ""
+                        }
                     }
+                },
+                "errors": {
+                    "missing_parameter": ""
+                },
+                "query": {
+                    "queried_string": "",
+                    "queried_language": "",
+                    "result": ""
+                }
+            },
+            "shutdown": {
+                "help": {
+                    "description": "",
+                    "args": {
+                        "delay": {
+                            "description": ""
+                        }
+                    }
+                },
+                "errors": {
+                    "invalid_format": "",
+                    "internal_exception": "",
+                    "unspecified_error": ""
+                },
+                "notice": "[time]"
+            },
+            "testtime": {
+                "help": {
+                    "description": "",
+                    "args": {
+                        "time_string": {
+                            "description": ""
+                        }
+                    }
+                },
+                "errors": {
+                    "missing_parameter": "",
+                    "invalid_format": "",
+                    "internal_exception": "",
+                    "unspecified_error": ""
+                },
+                "query": {
+                    "queried_string": "",
+                    "result": ""
                 }
             },
             "whois": {
