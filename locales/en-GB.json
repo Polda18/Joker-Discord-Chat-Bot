@@ -3,6 +3,17 @@
     "author": "CZghost",
     "content": {
         "language": "English (United Kingdom)",
+        "time": {
+            "format": {
+                "years": "#{year}[1]#{years}[2+]",
+                "months": "#{month}[1]#{months}[2+]",
+                "weeks": "#{week}[1]#{weeks}[2+]",
+                "days": "#{day}[1]#{days}[2+]",
+                "hours": "#{hour}[1]#{hours}[2+]",
+                "minutes": "#{minute}[1]#{minutes}[2+]",
+                "seconds": "#{second}[1]#{seconds}[2+]"
+            }
+        },
         "regions": {
             "brazil": "Brazil",
             "eu-central": "Central Europe",

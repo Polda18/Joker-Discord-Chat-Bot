@@ -37,6 +37,11 @@ client.credentials = {
 // Setup locale strings
 client.locales = {
     fallback_locale: "en-US",
+    supported_locales: {
+        'cs-CZ': literals.locale_support_types.COMPLETELY,
+        'en-GB': literals.locale_support_types.COMPLETELY,
+        'en-US': literals.locale_support_types.COMPLETELY
+    },
     locale_strings: {}      // Will be filled in programatically
 }
 

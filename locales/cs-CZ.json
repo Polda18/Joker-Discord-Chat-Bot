@@ -3,6 +3,17 @@
     "author": "CZghost",
     "content": {
         "language": "Čeština (Česká republika)",
+        "time": {
+            "format": {
+                "years": "#{rok}[1]#{roky}[2-4]#{let}[5+]",
+                "months": "#{měsíc}[1]#{měsíce}[2-4]#{měsíců}[5+]",
+                "weeks": "#{týden}[1]#{týdny}[2-4]#{týdnů}[5+]",
+                "days": "#{den}[1]#{dny}[2-4]#{dnů}[5+]",
+                "hours": "#{hodina}[1]#{hodiny}[2-4]#{hodin}[5+]",
+                "minutes": "#{minuta}[1]#{minuty}[2-4]#{minut}[5+]",
+                "seconds": "#{sekunda}[1]#{sekundy}[2-4]#{sekund}[5+]"
+            }
+        },
         "regions": {
             "brazil": "Brazílie",
             "eu-central": "Střední Evropa",

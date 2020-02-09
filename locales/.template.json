@@ -10,6 +10,18 @@
     "content": {
         "#language": "Localized name of this language including country designation",
         "language": "",
+        "#time": "Localized time units description tags in this format: #{string}[range] - there are no '[', ']', '{' and '}' allowed inside 'string' - anything outside this format gets ignored",
+        "time": {
+            "format": {
+                "years": "#{}[]",
+                "months": "#{}[]",
+                "weeks": "#{}[]",
+                "days": "#{}[]",
+                "hours": "#{}[]",
+                "minutes": "#{}[]",
+                "seconds": "#{}[]"
+            }
+        },
         "#regions": "Localized region names based on what Discord reports",
         "regions": {
             "brazil": "",

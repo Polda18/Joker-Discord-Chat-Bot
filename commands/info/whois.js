@@ -10,6 +10,8 @@ const { RichEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 const { getMember, formatDate, createError, resolveLocale } = require("../../functions.js");
 
+const literals = require("../../literals.js");
+
 module.exports = {
     name: 'whois',
     aliases: [ 'who', 'user', 'info' ],
@@ -19,7 +21,11 @@ module.exports = {
         args: [
             {
                 name: 'user_reference',
-                type: [ 'mention', 'id', 'fragment' ],
+                type: [
+                    literals.help.types.MENTION,
+                    literals.help.types.ID,
+                    literals.help.types.FRAGMENT
+                ],
                 description: '#locale{commands:whois:help:args:user_reference:description}',
                 required: false
             }

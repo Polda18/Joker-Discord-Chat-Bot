@@ -7,6 +7,42 @@
  *****************************************/
 
 module.exports = {
+    time_errors: {
+        INVALID_FORMAT: 0,
+        INTERNAL_EXCEPTION: 1
+    },
+    time_constants: {
+        YEAR: 31556952000,
+        MONTH: 2592000000,
+        WEEK: 604800000,
+        DAY: 86400000,
+        MINUTE: 60000,
+        SECOND: 1000
+    },
+    help: {
+        args: {
+            required: {
+                opening_bracket: '<',
+                closing_bracket: '>'
+            },
+            optional: {
+                opening_bracket: '[',
+                closing_bracket: ']'
+            }
+        },
+        types: {
+            TIME: 0,
+            STRING: 1,
+            NUMBER: 2,
+            MENTION: 3,
+            FRAGMENT: 4,
+            ID: 5
+        }
+    },
+    locale_support_types: {
+        PARTIALLY: 0,
+        COMPLETELY: 1
+    },
     region_colors: {
         // This maps embed colors to specified regions
         'brazil': '#49bf41',        // Green

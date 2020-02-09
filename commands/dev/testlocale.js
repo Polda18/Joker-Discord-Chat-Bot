@@ -9,7 +9,7 @@
 const { RichEmbed } = require("discord.js");
 const { stripIndents } = require("common-tags");
 
-const { formatDate, createError, resolveLocale } = require("../../functions.js");
+const { createError, resolveLocale } = require("../../functions.js");
 const literals = require("../../literals.js");
 
 module.exports = {
@@ -20,7 +20,7 @@ module.exports = {
         args: [
             {
                 name: 'locale_string',
-                type: 'string',
+                type: literals.help.types.STRING,
                 description: '#locale{commands:testlocale:help:args:locale_string:description}',
                 required: true
             }
@@ -34,16 +34,25 @@ module.exports = {
             : client.settings.guilds.default.locale
             || client.settings.guilds.default.locale;
         
+        // Check if caller is a registered developer
+        if(
+            message.author.id !== client.settings.developers.chief &&
+            !client.settings.developers.assistants.includes(message.author.id)
+        ) return message.channel.send("`error`: `not a developer`");
+        
         // Error = missing parameter
         if(args.length < 1) return message.channel.send(createError("`error`: `missing parm`"));
         
         // Get the locale string
-        let locale_string = args.join(" ");
+        let localeString = args[0];
+
+        // If a locale code is specified use that one
+        let LocaleCodeSpec = (args.length > 1) ? args[1] : localeCode;
 
         // Return resolved locale
         let query = stripIndents`
-            \`query\`: \`${locale_string}\`
-            \`resolved\`: \`${resolveLocale(client, locale_string, localeCode)}\`
+            \`query\`: \`${localeString}\`
+            \`resolved\`: \`${resolveLocale(client, localeString, LocaleCodeSpec)}\`
         `.trim();
 
         await message.channel.send(query);
