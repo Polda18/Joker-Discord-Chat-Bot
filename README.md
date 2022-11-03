@@ -3,7 +3,8 @@
 
 Discord chat bot for automated messages guard, users management and entertainment 
 
-_This project is currently under construction._
+## RETIRED
+This repository is retired and no longer maintained. New source code (completely rebuilt) is now hosted on GitHub as [JokerBot](https://github.com/Polda18/JokerBot).
 
 ## Sneak preview
 Please note that the first version of the bot is still in development, so many things may change.
